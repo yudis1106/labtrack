@@ -1,0 +1,123 @@
+// =========================================================
+// LabTrack - data.js
+// "Database palsu": hanya berisi data contoh, tanpa logika.
+// File ini harus dimuat SEBELUM app.js.
+// =========================================================
+
+// ---------------------------------------------------------
+// DAFTAR ALAT
+// total    = jumlah seluruh unit yang dimiliki lab
+// tersedia = jumlah unit yang ada di lab dan boleh dipinjam
+// kondisi  = "Baik" atau "Perlu Diperiksa"
+// ---------------------------------------------------------
+const daftarAlat = [
+  {
+    id: 1,
+    nama: "Multimeter Digital",
+    kategori: "Alat Ukur",
+    total: 10,
+    tersedia: 10,
+    kondisi: "Baik",
+    deskripsi: "Untuk mengukur tegangan, arus, dan hambatan listrik.",
+    lokasi: "Rak A1"
+  },
+  {
+    id: 2,
+    nama: "Osiloskop",
+    kategori: "Alat Ukur",
+    total: 4,
+    tersedia: 4,
+    kondisi: "Baik",
+    deskripsi: "Untuk melihat bentuk gelombang sinyal listrik.",
+    lokasi: "Meja Instrumen 1"
+  },
+  {
+    id: 3,
+    nama: "Power Supply",
+    kategori: "Peralatan",
+    total: 6,
+    tersedia: 6,
+    kondisi: "Perlu Diperiksa",
+    deskripsi: "Sumber tegangan DC yang bisa diatur untuk rangkaian praktikum.",
+    lokasi: "Rak B2"
+  },
+  {
+    id: 4,
+    nama: "Solder",
+    kategori: "Peralatan",
+    total: 8,
+    tersedia: 8,
+    kondisi: "Baik",
+    deskripsi: "Untuk menyambung komponen ke papan rangkaian (PCB).",
+    lokasi: "Rak B1"
+  },
+  {
+    id: 5,
+    nama: "Arduino Uno",
+    kategori: "Mikrokontroler",
+    total: 12,
+    tersedia: 12,
+    kondisi: "Baik",
+    deskripsi: "Papan mikrokontroler untuk belajar pemrograman dan elektronika.",
+    lokasi: "Lemari C1"
+  },
+  {
+    id: 6,
+    nama: "Sensor Ultrasonik",
+    kategori: "Sensor",
+    total: 15,
+    tersedia: 15,
+    kondisi: "Baik",
+    deskripsi: "Sensor jarak berbasis gelombang suara (tipe HC-SR04).",
+    lokasi: "Lemari C2"
+  },
+  {
+    id: 7,
+    nama: "Sensor Suhu DHT11",
+    kategori: "Sensor",
+    total: 10,
+    tersedia: 10,
+    kondisi: "Perlu Diperiksa",
+    deskripsi: "Sensor suhu dan kelembapan udara.",
+    lokasi: "Lemari C2"
+  },
+  {
+    id: 8,
+    nama: "Breadboard",
+    kategori: "Komponen Elektronika",
+    total: 20,
+    tersedia: 20,
+    kondisi: "Baik",
+    deskripsi: "Papan untuk merangkai rangkaian tanpa solder.",
+    lokasi: "Laci D1"
+  },
+  {
+    id: 9,
+    nama: "Resistor",
+    kategori: "Komponen Elektronika",
+    total: 100,
+    tersedia: 100,
+    kondisi: "Baik",
+    deskripsi: "Penghambat arus listrik, berbagai nilai hambatan (1/4 W).",
+    lokasi: "Laci D2"
+  },
+  {
+    id: 10,
+    nama: "Kapasitor",
+    kategori: "Komponen Elektronika",
+    total: 60,
+    tersedia: 60,
+    kondisi: "Baik",
+    deskripsi: "Penyimpan muatan listrik, berbagai nilai kapasitansi.",
+    lokasi: "Laci D3"
+  }
+];
+
+// ---------------------------------------------------------
+// DAFTAR PEMINJAMAN
+// alatId = nomor id alat di daftarAlat (bukan nama alat)
+// tanggal memakai format YYYY-MM-DD
+// tanggalKembali kosong ("") jika alat belum dikembalikan
+// status = "Dipinjam" atau "Dikembalikan"
+// ---------------------------------------------------------
+const daftarPeminjaman = [];

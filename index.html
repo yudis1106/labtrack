@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LabTrack - Inventaris dan Peminjaman Alat Lab</title>
+
+  <!-- Font IBM Plex Sans dari Google Fonts. Kalau offline, browser memakai font cadangan. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- File CSS: semua urusan tampilan ada di sini -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== SIDEBAR / MENU NAVIGASI ===== -->
+  <aside class="sidebar">
+    <div class="merek">
+      <span class="merek-logo" aria-hidden="true"></span>
+      <span class="merek-nama">LabTrack</span>
+    </div>
+
+    <nav class="menu" aria-label="Menu utama">
+      <button class="menu-tombol" data-target="dashboard">Dashboard</button>
+      <button class="menu-tombol" data-target="inventaris">Inventaris</button>
+      <button class="menu-tombol" data-target="peminjaman">Peminjaman</button>
+      <button class="menu-tombol" data-target="riwayat">Riwayat</button>
+    </nav>
+  </aside>
+
+  <!-- ===== KONTEN UTAMA ===== -->
+  <main class="konten">
+
+    <!-- Section 1: Dashboard -->
+    <section id="dashboard" class="halaman">
+      <h2>Dashboard</h2>
+      <p class="subjudul">Ringkasan alat dan peminjaman terbaru.</p>
+      <div class="kartu-grid">
+        <div class="kartu-ringkas"><span class="kartu-angka" id="kartu-total">0</span><span class="kartu-label">Total alat</span></div>
+        <div class="kartu-ringkas hijau"><span class="kartu-angka" id="kartu-tersedia">0</span><span class="kartu-label">Tersedia</span></div>
+        <div class="kartu-ringkas biru"><span class="kartu-angka" id="kartu-dipinjam">0</span><span class="kartu-label">Sedang dipinjam</span></div>
+        <div class="kartu-ringkas kuning"><span class="kartu-angka" id="kartu-periksa">0</span><span class="kartu-label">Perlu diperiksa</span></div>
+      </div>
+      <h3>Peminjaman terbaru</h3>
+      <div class="tabel-bungkus">
+        <table class="tabel">
+          <thead><tr><th>Peminjam</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Status</th></tr></thead>
+          <tbody id="isi-dashboard"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 2: Inventaris -->
+    <section id="inventaris" class="halaman">
+      <h2>Inventaris</h2>
+      <p class="subjudul">Daftar alat laboratorium dan ketersediaannya.</p>
+      <div class="toolbar">
+        <input type="search" id="cari-alat" placeholder="Cari nama alat..." aria-label="Cari alat">
+        <select id="filter-kategori" aria-label="Filter kategori">
+          <option value="">Semua kategori</option>
+          <option>Alat Ukur</option>
+          <option>Komponen Elektronika</option>
+          <option>Mikrokontroler</option>
+          <option>Sensor</option>
+          <option>Peralatan</option>
+        </select>
+      </div>
+      <div class="tabel-bungkus">
+        <table class="tabel">
+          <thead>
+            <tr>
+              <th>Nama alat</th>
+              <th>Kategori</th>
+              <th class="angka">Total</th>
+              <th class="angka">Tersedia</th>
+              <th>Kondisi</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <!-- Baris tabel diisi oleh JavaScript (fungsi tampilkanInventaris) -->
+          <tbody id="isi-inventaris"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 3: Peminjaman -->
+    <section id="peminjaman" class="halaman">
+      <h2>Peminjaman</h2>
+      <p class="subjudul">Catat siapa yang meminjam alat.</p>
+      <form id="form-pinjam" class="form-kartu" novalidate>
+        <div class="form-grid">
+          <label>Nama peminjam <input type="text" id="input-nama" autocomplete="off"></label>
+          <label>NIM <input type="text" id="input-nim" inputmode="numeric" autocomplete="off"></label>
+          <label>Alat <select id="input-alat"></select></label>
+          <label>Jumlah <input type="number" id="input-jumlah" min="1" value="1"></label>
+          <label>Tanggal peminjaman <input type="date" id="input-tanggal"></label>
+          <label>Keperluan <input type="text" id="input-keperluan" autocomplete="off"></label>
+          <div class="penuh"><button type="submit" class="tombol">Pinjam</button></div>
+        </div>
+      </form>
+      <p id="pesan-form" class="pesan" role="status"></p>
+      <div class="tabel-bungkus">
+        <table class="tabel">
+          <thead><tr><th>Peminjam</th><th>NIM</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Keperluan</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="isi-peminjaman"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 4: Riwayat -->
+    <section id="riwayat" class="halaman">
+      <h2>Riwayat</h2>
+      <p class="subjudul">Peminjaman yang sudah dikembalikan.</p>
+      <div class="tabel-bungkus">
+        <table class="tabel">
+          <thead><tr><th>Peminjam</th><th>NIM</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Tanggal kembali</th><th>Status</th></tr></thead>
+          <tbody id="isi-riwayat"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Popup detail alat -->
+  <dialog id="dialog-detail">
+    <div id="isi-detail"></div>
+    <button type="button" class="tombol tombol-garis" id="tutup-detail">Tutup</button>
+  </dialog>
+
+  <!-- JavaScript. Nanti data.js harus dimuat SEBELUM app.js -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
