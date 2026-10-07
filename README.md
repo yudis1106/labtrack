@@ -14,5 +14,13 @@ HTML, CSS, dan JavaScript murni. Tanpa framework, backend, atau database.
 ## Menjalankan
 Buka `index.html` di browser.
 
+## Versi Python (terminal)
+Folder `python/` berisi LabTrack versi teks.
+
+```
+cd python
+python labtrack.py
+```
+
 ## Catatan
 Data memakai data contoh di `js/data.js`. Perubahan hilang saat halaman di-refresh.
