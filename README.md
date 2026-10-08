@@ -1,26 +1,55 @@
 # LabTrack
 
-Website sederhana untuk inventaris dan peminjaman alat laboratorium (tugas kuliah).
-
-## Fitur
-- Dashboard: ringkasan alat dan peminjaman terbaru
-- Inventaris: daftar alat, pencarian, filter kategori, detail alat
-- Peminjaman: formulir peminjaman dengan validasi, tombol Kembalikan
-- Riwayat: daftar peminjaman yang sudah dikembalikan
+LabTrack adalah website inventaris dan peminjaman alat laboratorium.
 
 ## Teknologi
-HTML, CSS, dan JavaScript murni. Tanpa framework, backend, atau database.
 
-## Menjalankan
-Buka `index.html` di browser.
+- HTML untuk struktur halaman
+- CSS untuk tampilan
+- JavaScript untuk interaksi halaman
+- Python Flask sebagai backend
+- JSON sebagai penyimpanan data sederhana
 
-## Versi Python (terminal)
-Folder `python/` berisi LabTrack versi teks.
+## Struktur utama
 
+- `index.html` = halaman website
+- `css/style.css` = tampilan website
+- `js/app.js` = interaksi frontend dan komunikasi dengan Python
+- `python/labtrack.py` = backend Python dan API
+- `python/data.json` = data alat dan peminjaman yang dibuat otomatis
+- `requirements.txt` = library Python yang dibutuhkan
+
+## Cara menjalankan
+
+1. Buka Terminal di folder `labtrack`.
+2. Install Flask:
+
+```bash
+pip install -r requirements.txt
 ```
-cd python
-python labtrack.py
+
+3. Jalankan server:
+
+```bash
+python python/labtrack.py
 ```
 
-## Catatan
-Data memakai data contoh di `js/data.js`. Perubahan hilang saat halaman di-refresh.
+4. Buka browser dan masuk ke:
+
+```text
+http://127.0.0.1:5000
+```
+
+Jangan membuka `index.html` dengan double click. Website harus dibuka melalui server Python supaya JavaScript bisa berkomunikasi dengan Flask.
+
+## Cara kerja
+
+Browser meminta data ke `/api/data`.
+
+Saat pengguna meminjam alat, JavaScript mengirim data ke `/api/peminjaman`.
+
+Python memvalidasi data, mengurangi stok, mencatat peminjaman, lalu menyimpan perubahan ke `python/data.json`.
+
+Saat alat dikembalikan, JavaScript mengirim permintaan ke `/api/peminjaman/<id>/kembali`.
+
+Python mengubah status menjadi `Dikembalikan`, menambah stok, lalu menyimpan perubahan.

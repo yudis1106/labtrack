@@ -1,55 +1,38 @@
-// =========================================================
-// LabTrack - app.js
-// Isi: navigasi, dashboard, inventaris, peminjaman, pengembalian, riwayat.
-// =========================================================
+// LabTrack - JavaScript frontend
+// JavaScript mengatur tampilan dan meminta data dari Python Flask.
 
-// 1. Ambil semua tombol menu dan semua halaman dari HTML
 const tombolMenu = document.querySelectorAll(".menu-tombol");
 const semuaHalaman = document.querySelectorAll(".halaman");
+let daftarAlat = [];
+let daftarPeminjaman = [];
 
-// 2. Fungsi untuk menampilkan satu halaman dan menyembunyikan yang lain
 function tampilkanHalaman(idHalaman) {
-  // Halaman: beri class "aktif" hanya pada halaman yang dipilih
   semuaHalaman.forEach(function (halaman) {
     halaman.classList.toggle("aktif", halaman.id === idHalaman);
   });
-
-  // Tombol menu: tandai tombol yang sedang dipilih
   tombolMenu.forEach(function (tombol) {
     const sedangDipilih = tombol.dataset.target === idHalaman;
     tombol.classList.toggle("aktif", sedangDipilih);
-
-    if (sedangDipilih) {
-      tombol.setAttribute("aria-current", "page");
-    } else {
-      tombol.removeAttribute("aria-current");
-    }
+    if (sedangDipilih) tombol.setAttribute("aria-current", "page");
+    else tombol.removeAttribute("aria-current");
   });
-
-  // Gulir kembali ke atas setiap pindah halaman
   window.scrollTo(0, 0);
 }
 
-// 3. Pasang "pendengar klik" di setiap tombol menu
 tombolMenu.forEach(function (tombol) {
   tombol.addEventListener("click", function () {
     tampilkanHalaman(tombol.dataset.target);
   });
 });
 
-// =========================================================
-// FUNGSI PEMBANTU
-// =========================================================
 const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-// "2026-10-05" -> "5 Okt 2026"
 function formatTanggal(tanggal) {
   if (!tanggal) return "-";
   const bagian = tanggal.split("-");
   return Number(bagian[2]) + " " + namaBulan[Number(bagian[1]) - 1] + " " + bagian[0];
 }
 
-// Tanggal hari ini dalam format YYYY-MM-DD
 function hariIni() {
   const n = new Date();
   const dua = function (x) { return String(x).padStart(2, "0"); };
@@ -60,10 +43,9 @@ function cariAlat(id) {
   return daftarAlat.find(function (a) { return a.id === id; });
 }
 
-// Mengamankan teks ketikan pengguna sebelum dimasukkan ke HTML
 function aman(teks) {
   const d = document.createElement("div");
-  d.textContent = teks;
+  d.textContent = teks ?? "";
   return d.innerHTML;
 }
 
@@ -76,43 +58,49 @@ function kelasKondisi(kondisi) {
   return kondisi === "Baik" ? "label-hijau" : "label-kuning";
 }
 
-// Peminjaman diurutkan dari yang terbaru
 function urutkanTerbaru(daftar) {
   return daftar.slice().sort(function (a, b) {
     return b.tanggalPinjam.localeCompare(a.tanggalPinjam) || b.id - a.id;
   });
 }
 
-// =========================================================
-// INVENTARIS: tabel, pencarian, filter, detail
-// =========================================================
+async function ambilData() {
+  const respons = await fetch("/api/data");
+  if (!respons.ok) throw new Error("Gagal mengambil data dari Python.");
+  const hasil = await respons.json();
+  daftarAlat = hasil.alat;
+  daftarPeminjaman = hasil.peminjaman;
+}
+
+async function prosesAPI(url, opsi) {
+  const respons = await fetch(url, opsi);
+  const hasil = await respons.json();
+  if (!respons.ok || !hasil.berhasil) throw new Error(hasil.pesan || "Terjadi kesalahan.");
+  daftarAlat = hasil.data.alat;
+  daftarPeminjaman = hasil.data.peminjaman;
+  return hasil;
+}
+
 function tampilkanInventaris() {
   const kata = document.getElementById("cari-alat").value.trim().toLowerCase();
   const kategori = document.getElementById("filter-kategori").value;
-
   const hasil = daftarAlat.filter(function (a) {
-    const cocokNama = a.nama.toLowerCase().includes(kata);
-    const cocokKategori = kategori === "" || a.kategori === kategori;
-    return cocokNama && cocokKategori;
+    return a.nama.toLowerCase().includes(kata) && (kategori === "" || a.kategori === kategori);
   });
 
   let html = "";
   hasil.forEach(function (a) {
     const kelasStok = a.tersedia === 0 ? "stok-habis" : "";
-    html += `
-      <tr>
-        <td class="nama-alat">${a.nama}</td>
-        <td>${a.kategori}</td>
-        <td class="angka">${a.total}</td>
-        <td class="angka ${kelasStok}">${a.tersedia}</td>
-        <td><span class="label ${kelasKondisi(a.kondisi)}">${a.kondisi}</span></td>
-        <td><button class="tombol tombol-garis tombol-kecil" data-detail="${a.id}">Detail</button></td>
-      </tr>`;
+    html += `<tr>
+      <td class="nama-alat">${aman(a.nama)}</td>
+      <td>${aman(a.kategori)}</td>
+      <td class="angka">${a.total}</td>
+      <td class="angka ${kelasStok}">${a.tersedia}</td>
+      <td><span class="label ${kelasKondisi(a.kondisi)}">${aman(a.kondisi)}</span></td>
+      <td><button class="tombol tombol-garis tombol-kecil" data-detail="${a.id}">Detail</button></td>
+    </tr>`;
   });
-
-  if (hasil.length === 0) {
-    html = '<tr><td colspan="6" class="kosong">Tidak ada alat yang cocok. Coba kata kunci atau kategori lain.</td></tr>';
-  }
+  if (hasil.length === 0) html = '<tr><td colspan="6" class="kosong">Tidak ada alat yang cocok. Coba kata kunci atau kategori lain.</td></tr>';
   document.getElementById("isi-inventaris").innerHTML = html;
 }
 
@@ -125,26 +113,22 @@ document.getElementById("isi-inventaris").addEventListener("click", function (e)
   const tombol = e.target.closest("[data-detail]");
   if (!tombol) return;
   const a = cariAlat(Number(tombol.dataset.detail));
-  document.getElementById("isi-detail").innerHTML = `
-    <h3>${a.nama}</h3>
+  if (!a) return;
+  document.getElementById("isi-detail").innerHTML = `<h3>${aman(a.nama)}</h3>
     <dl class="detail">
-      <dt>Kategori</dt><dd>${a.kategori}</dd>
-      <dt>Lokasi</dt><dd>${a.lokasi}</dd>
+      <dt>Kategori</dt><dd>${aman(a.kategori)}</dd>
+      <dt>Lokasi</dt><dd>${aman(a.lokasi)}</dd>
       <dt>Total</dt><dd>${a.total}</dd>
       <dt>Tersedia</dt><dd>${a.tersedia}</dd>
-      <dt>Kondisi</dt><dd>${a.kondisi}</dd>
-      <dt>Deskripsi</dt><dd>${a.deskripsi}</dd>
+      <dt>Kondisi</dt><dd>${aman(a.kondisi)}</dd>
+      <dt>Deskripsi</dt><dd>${aman(a.deskripsi)}</dd>
     </dl>`;
   dialogDetail.showModal();
 });
 
 document.getElementById("tutup-detail").addEventListener("click", function () { dialogDetail.close(); });
-// Klik di luar kotak popup juga menutupnya
 dialogDetail.addEventListener("click", function (e) { if (e.target === dialogDetail) dialogDetail.close(); });
 
-// =========================================================
-// DASHBOARD
-// =========================================================
 function tampilkanDashboard() {
   let total = 0, tersedia = 0, dipinjam = 0, periksa = 0;
   daftarAlat.forEach(function (a) {
@@ -163,58 +147,36 @@ function tampilkanDashboard() {
 
   let html = "";
   urutkanTerbaru(daftarPeminjaman).slice(0, 5).forEach(function (p) {
-    html += `
-      <tr>
-        <td>${aman(p.namaPeminjam)}</td>
-        <td>${cariAlat(p.alatId).nama}</td>
-        <td class="angka">${p.jumlah}</td>
-        <td>${formatTanggal(p.tanggalPinjam)}</td>
-        <td>${labelStatus(p.status)}</td>
-      </tr>`;
+    const alat = cariAlat(p.alatId);
+    html += `<tr><td>${aman(p.namaPeminjam)}</td><td>${alat ? aman(alat.nama) : "-"}</td>
+      <td class="angka">${p.jumlah}</td><td>${formatTanggal(p.tanggalPinjam)}</td><td>${labelStatus(p.status)}</td></tr>`;
   });
-  if (html === "") {
-    html = '<tr><td colspan="5" class="kosong">Belum ada peminjaman. Catat peminjaman pertama di menu Peminjaman.</td></tr>';
-  }
+  if (html === "") html = '<tr><td colspan="5" class="kosong">Belum ada peminjaman. Catat peminjaman pertama di menu Peminjaman.</td></tr>';
   document.getElementById("isi-dashboard").innerHTML = html;
 }
 
-// =========================================================
-// PEMINJAMAN: pilihan alat, tabel, formulir, pengembalian
-// =========================================================
 function isiPilihanAlat() {
   const pilih = document.getElementById("input-alat");
   const pilihanLama = pilih.value;
   let html = '<option value="">Pilih alat...</option>';
   daftarAlat.forEach(function (a) {
     const nonaktif = a.tersedia === 0 ? "disabled" : "";
-    html += `<option value="${a.id}" ${nonaktif}>${a.nama} (stok: ${a.tersedia})</option>`;
+    html += `<option value="${a.id}" ${nonaktif}>${aman(a.nama)} (stok: ${a.tersedia})</option>`;
   });
   pilih.innerHTML = html;
-  pilih.value = pilihanLama;
+  if (pilihanLama && cariAlat(Number(pilihanLama))) pilih.value = pilihanLama;
 }
 
 function tampilkanPeminjaman() {
   let html = "";
   urutkanTerbaru(daftarPeminjaman).forEach(function (p) {
-    // Tombol Kembalikan hanya ada pada data yang masih Dipinjam
-    const aksi = p.status === "Dipinjam"
-      ? `<button class="tombol tombol-garis tombol-kecil" data-kembali="${p.id}">Kembalikan</button>`
-      : "-";
-    html += `
-      <tr>
-        <td>${aman(p.namaPeminjam)}</td>
-        <td>${aman(p.nim)}</td>
-        <td>${cariAlat(p.alatId).nama}</td>
-        <td class="angka">${p.jumlah}</td>
-        <td>${formatTanggal(p.tanggalPinjam)}</td>
-        <td>${aman(p.keperluan)}</td>
-        <td>${labelStatus(p.status)}</td>
-        <td>${aksi}</td>
-      </tr>`;
+    const alat = cariAlat(p.alatId);
+    const aksi = p.status === "Dipinjam" ? `<button class="tombol tombol-garis tombol-kecil" data-kembali="${p.id}">Kembalikan</button>` : "-";
+    html += `<tr><td>${aman(p.namaPeminjam)}</td><td>${aman(p.nim)}</td><td>${alat ? aman(alat.nama) : "-"}</td>
+      <td class="angka">${p.jumlah}</td><td>${formatTanggal(p.tanggalPinjam)}</td><td>${aman(p.keperluan)}</td>
+      <td>${labelStatus(p.status)}</td><td>${aksi}</td></tr>`;
   });
-  if (html === "") {
-    html = '<tr><td colspan="8" class="kosong">Belum ada data peminjaman. Isi formulir di atas untuk mencatat peminjaman.</td></tr>';
-  }
+  if (html === "") html = '<tr><td colspan="8" class="kosong">Belum ada data peminjaman. Isi formulir di atas untuk mencatat peminjaman.</td></tr>';
   document.getElementById("isi-peminjaman").innerHTML = html;
 }
 
@@ -224,89 +186,59 @@ function tampilkanPesan(teks, berhasil) {
   pesan.className = "pesan " + (berhasil ? "pesan-ok" : "pesan-error");
 }
 
-document.getElementById("form-pinjam").addEventListener("submit", function (e) {
-  e.preventDefault(); // cegah halaman ter-refresh
-
+document.getElementById("form-pinjam").addEventListener("submit", async function (e) {
+  e.preventDefault();
   const nama = document.getElementById("input-nama").value.trim();
   const nim = document.getElementById("input-nim").value.trim();
-  const alat = cariAlat(Number(document.getElementById("input-alat").value));
+  const alatId = Number(document.getElementById("input-alat").value);
   const jumlah = Number(document.getElementById("input-jumlah").value);
   const tanggal = document.getElementById("input-tanggal").value;
   const keperluan = document.getElementById("input-keperluan").value.trim();
 
-  // Validasi: berhenti di kesalahan pertama
-  if (!nama || !nim || !alat || !tanggal || !keperluan) {
-    return tampilkanPesan("Semua kolom wajib diisi.", false);
-  }
-  if (!/^\d+$/.test(nim)) {
-    return tampilkanPesan("NIM hanya boleh berisi angka.", false);
-  }
-  if (!Number.isInteger(jumlah) || jumlah < 1) {
-    return tampilkanPesan("Jumlah harus berupa angka bulat minimal 1.", false);
-  }
-  if (jumlah > alat.tersedia) {
-    return tampilkanPesan("Stok " + alat.nama + " hanya tersisa " + alat.tersedia + ".", false);
-  }
+  if (!nama || !nim || !alatId || !tanggal || !keperluan) return tampilkanPesan("Semua kolom wajib diisi.", false);
+  if (!/^\d+$/.test(nim)) return tampilkanPesan("NIM hanya boleh berisi angka.", false);
+  if (!Number.isInteger(jumlah) || jumlah < 1) return tampilkanPesan("Jumlah harus berupa angka bulat minimal 1.", false);
 
-  // Semua benar: catat peminjaman dan kurangi stok
-  let idBaru = 1;
-  daftarPeminjaman.forEach(function (p) { if (p.id >= idBaru) idBaru = p.id + 1; });
-  daftarPeminjaman.push({
-    id: idBaru, namaPeminjam: nama, nim: nim, alatId: alat.id, jumlah: jumlah,
-    tanggalPinjam: tanggal, tanggalKembali: "", keperluan: keperluan, status: "Dipinjam"
-  });
-  alat.tersedia -= jumlah;
-
-  this.reset();
-  document.getElementById("input-tanggal").value = hariIni();
-  renderSemua();
-  tampilkanPesan("Peminjaman berhasil dicatat.", true);
+  try {
+    await prosesAPI("/api/peminjaman", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ namaPeminjam: nama, nim: nim, alatId: alatId, jumlah: jumlah, tanggalPinjam: tanggal, keperluan: keperluan })
+    });
+    this.reset();
+    document.getElementById("input-tanggal").value = hariIni();
+    renderSemua();
+    tampilkanPesan("Peminjaman berhasil dicatat.", true);
+  } catch (error) {
+    tampilkanPesan(error.message, false);
+  }
 });
 
-document.getElementById("isi-peminjaman").addEventListener("click", function (e) {
+document.getElementById("isi-peminjaman").addEventListener("click", async function (e) {
   const tombol = e.target.closest("[data-kembali]");
-  if (!tombol) return;
+  if (!tombol || !confirm("Yakin alat ini sudah dikembalikan?")) return;
 
-  const p = daftarPeminjaman.find(function (x) { return x.id === Number(tombol.dataset.kembali); });
-  // Cek status dulu agar stok tidak bertambah dua kali
-  if (!p || p.status !== "Dipinjam") return;
-  if (!confirm("Yakin alat ini sudah dikembalikan?")) return;
-
-  p.status = "Dikembalikan";
-  p.tanggalKembali = hariIni();
-  cariAlat(p.alatId).tersedia += p.jumlah;
-
-  renderSemua();
-  tampilkanPesan("Pengembalian dicatat. Data masuk ke Riwayat.", true);
+  try {
+    await prosesAPI("/api/peminjaman/" + tombol.dataset.kembali + "/kembali", { method: "POST" });
+    renderSemua();
+    tampilkanPesan("Pengembalian dicatat. Data masuk ke Riwayat.", true);
+  } catch (error) {
+    tampilkanPesan(error.message, false);
+  }
 });
 
-// =========================================================
-// RIWAYAT
-// =========================================================
 function tampilkanRiwayat() {
   const selesai = urutkanTerbaru(daftarPeminjaman).filter(function (p) { return p.status === "Dikembalikan"; });
   let html = "";
   selesai.forEach(function (p) {
-    html += `
-      <tr>
-        <td>${aman(p.namaPeminjam)}</td>
-        <td>${aman(p.nim)}</td>
-        <td>${cariAlat(p.alatId).nama}</td>
-        <td class="angka">${p.jumlah}</td>
-        <td>${formatTanggal(p.tanggalPinjam)}</td>
-        <td>${formatTanggal(p.tanggalKembali)}</td>
-        <td>${labelStatus(p.status)}</td>
-      </tr>`;
+    const alat = cariAlat(p.alatId);
+    html += `<tr><td>${aman(p.namaPeminjam)}</td><td>${aman(p.nim)}</td><td>${alat ? aman(alat.nama) : "-"}</td>
+      <td class="angka">${p.jumlah}</td><td>${formatTanggal(p.tanggalPinjam)}</td><td>${formatTanggal(p.tanggalKembali)}</td><td>${labelStatus(p.status)}</td></tr>`;
   });
-  if (selesai.length === 0) {
-    html = '<tr><td colspan="7" class="kosong">Belum ada alat yang dikembalikan.</td></tr>';
-  }
+  if (selesai.length === 0) html = '<tr><td colspan="7" class="kosong">Belum ada alat yang dikembalikan.</td></tr>';
   document.getElementById("isi-riwayat").innerHTML = html;
 }
 
-// =========================================================
-// Menggambar ulang semua tampilan setiap data berubah
-// =========================================================
 function renderSemua() {
   tampilkanDashboard();
   tampilkanInventaris();
@@ -315,7 +247,15 @@ function renderSemua() {
   tampilkanRiwayat();
 }
 
-// 4. Saat website pertama dibuka, tampilkan Dashboard
-document.getElementById("input-tanggal").value = hariIni();
-renderSemua();
-tampilkanHalaman("dashboard");
+async function mulaiWebsite() {
+  try {
+    await ambilData();
+    document.getElementById("input-tanggal").value = hariIni();
+    renderSemua();
+    tampilkanHalaman("dashboard");
+  } catch (error) {
+    document.getElementById("isi-dashboard").innerHTML = `<tr><td colspan="5" class="kosong">${aman(error.message)} Pastikan server Python sedang berjalan.</td></tr>`;
+  }
+}
+
+mulaiWebsite();
