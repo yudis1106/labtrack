@@ -15,6 +15,7 @@
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body>
 
@@ -34,7 +35,9 @@
   </section>
 
   <!-- ===== SIDEBAR / MENU NAVIGASI ===== -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar-menu">
+    <button type="button" id="sidebar-close" class="sidebar-toggle" aria-label="Tutup menu samping" aria-controls="sidebar-menu" aria-expanded="true">‹</button>
+
     <div class="merek">
       <span class="merek-logo" aria-hidden="true"></span>
       <span class="merek-nama">LabTrack</span>
@@ -47,6 +50,8 @@
       <button class="menu-tombol" data-target="riwayat">Riwayat</button>
     </nav>
   </aside>
+
+  <button type="button" id="sidebar-open" class="sidebar-open-button" aria-label="Buka menu samping" aria-controls="sidebar-menu" aria-expanded="false" hidden>☰</button>
 
   <!-- ===== KONTEN UTAMA ===== -->
   <main class="konten">
@@ -178,6 +183,7 @@
 
   <script src="js/app.js"></script>
   <script src="js/home.js"></script>
+  <script src="js/sidebar.js"></script>
 
 </body>
 </html>
