@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Logo Labstrack</title>
+  <desc id="desc">Gear otomasi dengan jalur rangkaian listrik dan simbol petir.</desc>
+  <defs>
+    <linearGradient id="gear" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#20dfd6"/>
+      <stop offset=".46" stop-color="#10b6b5"/>
+      <stop offset="1" stop-color="#087485"/>
+    </linearGradient>
+    <linearGradient id="inner" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#24e4dc"/>
+      <stop offset="1" stop-color="#098899"/>
+    </linearGradient>
+    <radialGradient id="core" cx=".42" cy=".36" r=".72">
+      <stop offset="0" stop-color="#0d7794"/>
+      <stop offset="1" stop-color="#062f57"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#031d2c" flood-opacity=".25"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <polygon points="256.0,30.0 304.7,74.4 369.0,60.3 388.9,123.1 451.7,143.0 437.6,207.3 482.0,256.0 437.6,304.7 451.7,369.0 388.9,388.9 369.0,451.7 304.7,437.6 256.0,482.0 207.3,437.6 143.0,451.7 123.1,388.9 60.3,369.0 74.4,304.7 30.0,256.0 74.4,207.3 60.3,143.0 123.1,123.1 143.0,60.3 207.3,74.4" fill="url(#gear)" stroke="#062f57" stroke-width="28" stroke-linejoin="round"/>
+    <polygon points="256.0,30.0 304.7,74.4 369.0,60.3 388.9,123.1 451.7,143.0 437.6,207.3 482.0,256.0 437.6,304.7 451.7,369.0 388.9,388.9 369.0,451.7 304.7,437.6 256.0,482.0 207.3,437.6 143.0,451.7 123.1,388.9 60.3,369.0 74.4,304.7 30.0,256.0 74.4,207.3 60.3,143.0 123.1,123.1 143.0,60.3 207.3,74.4" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
+
+    <circle cx="256" cy="256" r="151" fill="#062f57" stroke="#ffffff" stroke-width="9"/>
+    <circle cx="256" cy="256" r="139" fill="url(#core)" opacity=".92"/>
+
+    <g fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M104 190h42l30 30"/>
+      <path d="M94 256h62l23 0"/>
+      <path d="M110 326h38l33-33"/>
+      <path d="M408 190h-42l-30 30"/>
+      <path d="M418 256h-62l-23 0"/>
+      <path d="M402 326h-38l-33-33"/>
+    </g>
+
+    <g fill="#17c9c4" stroke="#ffffff" stroke-width="9">
+      <circle cx="104" cy="190" r="18"/>
+      <circle cx="94" cy="256" r="18"/>
+      <circle cx="110" cy="326" r="18"/>
+      <circle cx="408" cy="190" r="18"/>
+      <circle cx="418" cy="256" r="18"/>
+      <circle cx="402" cy="326" r="18"/>
+    </g>
+
+    <polygon points="256.0,151.0 282.6,174.2 317.7,171.1 325.6,205.5 355.9,223.6 342.0,256.0 355.9,288.4 325.6,306.5 317.7,340.9 282.6,337.8 256.0,361.0 229.4,337.8 194.3,340.9 186.4,306.5 156.1,288.4 170.0,256.0 156.1,223.6 186.4,205.5 194.3,171.1 229.4,174.2" fill="url(#inner)" stroke="#ffffff" stroke-width="11" stroke-linejoin="round"/>
+    <circle cx="256" cy="256" r="61" fill="url(#core)" stroke="#ffffff" stroke-width="9"/>
+
+    <path d="M273 184l-71 91h45l-13 61 78-105h-47z" fill="#ffffff" stroke="#d9ffff" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+</svg>
