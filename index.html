@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- File CSS: semua urusan tampilan ada di sini -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -46,7 +45,7 @@
       <h3>Peminjaman terbaru</h3>
       <div class="tabel-bungkus">
         <table class="tabel">
-          <thead><tr><th>Peminjam</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Status</th></tr></thead>
+          <thead><tr><th>Peminjam</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Deadline</th><th>Status</th></tr></thead>
           <tbody id="isi-dashboard"></tbody>
         </table>
       </div>
@@ -79,7 +78,6 @@
               <th>Aksi</th>
             </tr>
           </thead>
-          <!-- Baris tabel diisi oleh JavaScript (fungsi tampilkanInventaris) -->
           <tbody id="isi-inventaris"></tbody>
         </table>
       </div>
@@ -88,22 +86,41 @@
     <!-- Section 3: Peminjaman -->
     <section id="peminjaman" class="halaman">
       <h2>Peminjaman</h2>
-      <p class="subjudul">Catat siapa yang meminjam alat.</p>
-      <form id="form-pinjam" class="form-kartu" novalidate>
+      <p class="subjudul">Catat peminjaman, deadline pengembalian, dan foto KTM.</p>
+      <form id="form-pinjam" class="form-kartu" enctype="multipart/form-data" novalidate>
         <div class="form-grid">
           <label>Nama peminjam <input type="text" id="input-nama" autocomplete="off"></label>
           <label>NIM <input type="text" id="input-nim" inputmode="numeric" autocomplete="off"></label>
           <label>Alat <select id="input-alat"></select></label>
           <label>Jumlah <input type="number" id="input-jumlah" min="1" value="1"></label>
           <label>Tanggal peminjaman <input type="date" id="input-tanggal"></label>
+          <label>Deadline pengembalian <input type="date" id="input-deadline"></label>
           <label>Keperluan <input type="text" id="input-keperluan" autocomplete="off"></label>
+          <label>
+            Foto KTM
+            <input type="file" id="input-ktm" accept="image/jpeg,image/png">
+            <small class="petunjuk">JPG/PNG, maksimal 5 MB. Disimpan privat dan dihapus saat alat dikembalikan.</small>
+          </label>
           <div class="penuh"><button type="submit" class="tombol">Pinjam</button></div>
         </div>
       </form>
       <p id="pesan-form" class="pesan" role="status"></p>
       <div class="tabel-bungkus">
         <table class="tabel">
-          <thead><tr><th>Peminjam</th><th>NIM</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Keperluan</th><th>Status</th><th>Aksi</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Peminjam</th>
+              <th>NIM</th>
+              <th>Alat</th>
+              <th class="angka">Jumlah</th>
+              <th>Tanggal pinjam</th>
+              <th>Deadline</th>
+              <th>Keperluan</th>
+              <th>KTM</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
           <tbody id="isi-peminjaman"></tbody>
         </table>
       </div>
@@ -112,10 +129,21 @@
     <!-- Section 4: Riwayat -->
     <section id="riwayat" class="halaman">
       <h2>Riwayat</h2>
-      <p class="subjudul">Peminjaman yang sudah dikembalikan.</p>
+      <p class="subjudul">Peminjaman yang sudah dikembalikan. Foto KTM otomatis dihapus.</p>
       <div class="tabel-bungkus">
         <table class="tabel">
-          <thead><tr><th>Peminjam</th><th>NIM</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Tanggal kembali</th><th>Status</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Peminjam</th>
+              <th>NIM</th>
+              <th>Alat</th>
+              <th class="angka">Jumlah</th>
+              <th>Tanggal pinjam</th>
+              <th>Deadline</th>
+              <th>Tanggal kembali</th>
+              <th>Status</th>
+            </tr>
+          </thead>
           <tbody id="isi-riwayat"></tbody>
         </table>
       </div>
@@ -129,7 +157,6 @@
     <button type="button" class="tombol tombol-garis" id="tutup-detail">Tutup</button>
   </dialog>
 
-  <!-- JavaScript. Nanti data.js harus dimuat SEBELUM app.js -->
   <script src="js/app.js"></script>
 
 </body>
