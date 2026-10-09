@@ -1,6 +1,6 @@
-/* Homepage Labstrack - tampilan pembuka bergaya full-screen */
+/* Homepage LabTrack - tampilan pembuka bergaya full-screen */
 :root {
-  --lab-logo: url("../assets/labtrack-logo.svg");
+  --lab-logo: url("../assets/labtrack-logo-exact.svg");
 }
 
 body.home-terbuka {
