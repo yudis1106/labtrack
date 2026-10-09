@@ -196,10 +196,13 @@ def pinjam_alat():
             return response_error(f"Stok {alat.get('nama', 'alat')} hanya tersisa {tersedia}.")
 
         # Nama file acak agar NIM/nama mahasiswa tidak muncul pada path Storage.
+        # Supabase Storage menerima bytes/BufferedReader/FileIO/path. Stream upload
+        # dari Werkzeug adalah SpooledTemporaryFile, jadi dibaca menjadi bytes dulu.
         path_foto = f"aktif/{uuid4().hex}{ekstensi}"
+        isi_foto = foto_ktm.read()
         supabase.storage.from_(BUCKET_KTM).upload(
             path=path_foto,
-            file=foto_ktm.stream,
+            file=isi_foto,
             file_options={
                 "content-type": tipe_file,
                 "cache-control": "0",
