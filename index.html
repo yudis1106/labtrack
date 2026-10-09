@@ -3,22 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LabTrack - Inventaris dan Peminjaman Alat Lab</title>
+  <meta name="theme-color" content="#0e3a43">
+  <meta name="description" content="Labstrack - Sistem Inventaris dan Peminjaman Alat Laboratorium">
+  <title>Labstrack - Inventaris dan Peminjaman Alat Lab</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e3a43'/%3E%3Cpath d='M16 5l4 3 5-1 2 5-3 4 1 5-5 2-4 4-4-4-5-2 1-5-3-4 2-5 5 1z' fill='%230f8b8d' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M17 9l-5 8h4l-1 6 6-9h-4z' fill='white'/%3E%3C/svg%3E">
 
   <!-- Font IBM Plex Sans dari Google Fonts. Kalau offline, browser memakai font cadangan. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
+
+  <!-- ===== HOMEPAGE / LANDING PAGE ===== -->
+  <section id="home-screen" class="home-screen" aria-label="Homepage Labstrack">
+    <p class="home-kicker">Laboratory <span>Tracking System</span></p>
+
+    <div class="home-center">
+      <div class="home-logo" role="img" aria-label="Logo Labstrack berupa gear, rangkaian listrik, dan simbol petir"></div>
+      <h1 class="home-title">Labstrack</h1>
+      <p class="home-subtitle">Sistem inventaris dan peminjaman alat laboratorium untuk pencatatan yang lebih rapi, cepat, dan terkontrol.</p>
+      <button type="button" id="home-enter" class="home-enter">Masuk Dashboard</button>
+    </div>
+
+    <p class="home-studio">Inventory &amp; Loan System</p>
+    <span class="home-edge" aria-hidden="true"></span>
+  </section>
 
   <!-- ===== SIDEBAR / MENU NAVIGASI ===== -->
   <aside class="sidebar">
     <div class="merek">
       <span class="merek-logo" aria-hidden="true"></span>
-      <span class="merek-nama">LabTrack</span>
+      <span class="merek-nama">Labstrack</span>
     </div>
 
     <nav class="menu" aria-label="Menu utama">
@@ -158,6 +177,7 @@
   </dialog>
 
   <script src="js/app.js"></script>
+  <script src="js/home.js"></script>
 
 </body>
 </html>
