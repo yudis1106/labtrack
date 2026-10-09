@@ -1,0 +1,127 @@
+/* Sidebar buka/tutup LabTrack */
+.sidebar {
+  z-index: 100;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.konten {
+  transition: margin-left 0.28s ease, padding-left 0.28s ease, max-width 0.28s ease;
+}
+
+/* Tombol panah saat sidebar sedang terbuka */
+.sidebar-toggle {
+  position: absolute;
+  top: 20px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font: inherit;
+  font-size: 1.65rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateX(-2px);
+}
+
+.sidebar-toggle:focus-visible,
+.sidebar-open-button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* Beri ruang agar tombol tutup tidak menimpa nama LabTrack. */
+.sidebar .merek {
+  padding-right: 42px;
+}
+
+/* Tombol hamburger yang muncul ketika sidebar ditutup. */
+.sidebar-open-button {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 150;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: var(--sidebar);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(14, 58, 67, 0.22);
+  font: inherit;
+  font-size: 1.35rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.sidebar-open-button:hover {
+  background: var(--aksen);
+  transform: translateY(-1px);
+}
+
+/* Kondisi sidebar ditutup pada desktop. */
+body.sidebar-tertutup .sidebar {
+  transform: translateX(-100%);
+  box-shadow: none;
+}
+
+body.sidebar-tertutup .sidebar-open-button {
+  display: flex;
+}
+
+body.sidebar-tertutup .konten {
+  margin-left: 0;
+  padding-left: 76px;
+  max-width: 1320px;
+}
+
+@media (max-width: 800px) {
+  .sidebar-toggle {
+    top: 12px;
+    right: 14px;
+  }
+
+  .sidebar .merek {
+    padding-right: 46px;
+  }
+
+  /* Di HP, sidebar memang berupa bar atas. Saat ditutup, bar disembunyikan. */
+  body.sidebar-tertutup .sidebar {
+    display: none;
+    transform: none;
+  }
+
+  body.sidebar-tertutup .konten {
+    margin-left: 0;
+    padding: 70px 16px 24px;
+    max-width: none;
+  }
+
+  .sidebar-open-button {
+    top: 14px;
+    left: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .konten,
+  .sidebar-toggle,
+  .sidebar-open-button {
+    transition: none !important;
+  }
+}
