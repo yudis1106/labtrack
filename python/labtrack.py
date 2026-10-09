@@ -1,14 +1,16 @@
 # LabTrack Web App
 # Backend Python menggunakan Flask + Supabase.
 
+import base64
 from datetime import date, datetime
 import os
 from pathlib import Path
+import re
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, Response, jsonify, request, send_from_directory
 from supabase import create_client
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -30,6 +32,7 @@ TIPE_FOTO_KTM = {
     ".jpeg": "image/jpeg",
     ".png": "image/png",
 }
+LOGO_SVG_PATH = ROOT / "assets" / "labtrack-logo-exact.svg"
 
 
 def hari_ini_wib():
@@ -129,6 +132,32 @@ def file_terlalu_besar(_error):
 @app.get("/")
 def halaman_utama():
     return send_from_directory(ROOT, "index.html")
+
+
+@app.get("/assets/labtrack-logo-image")
+def logo_labtrack_image():
+    """Kirim gambar raster asli yang tersimpan di dalam SVG sebagai file gambar langsung.
+
+    Chrome dapat gagal menampilkan raster data-URI yang berada di dalam SVG eksternal
+    ketika SVG dipakai sebagai CSS background. Endpoint ini mengeluarkan isi raster
+    tersebut langsung agar logo tampil normal di homepage, sidebar, dan favicon.
+    """
+    try:
+        isi_svg = LOGO_SVG_PATH.read_text(encoding="utf-8")
+        cocok = re.search(r'href="data:(image/[^;]+);base64,([^\"]+)"', isi_svg)
+        if not cocok:
+            return Response("Logo tidak ditemukan.", status=404, mimetype="text/plain")
+
+        tipe_gambar = cocok.group(1)
+        data_gambar = base64.b64decode(cocok.group(2))
+        return Response(
+            data_gambar,
+            mimetype=tipe_gambar,
+            headers={"Cache-Control": "public, max-age=86400"},
+        )
+    except Exception as error:
+        print("Gagal memuat logo LabTrack:", error)
+        return Response("Gagal memuat logo.", status=500, mimetype="text/plain")
 
 
 @app.get("/<path:nama_file>")
