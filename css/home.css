@@ -1,6 +1,6 @@
 /* Homepage LabTrack - tampilan pembuka bergaya full-screen */
 :root {
-  --lab-logo: url("/assets/Glossy%20Teal%20PLC%20Automation%20Icon.png?v=6");
+  --lab-logo: url("/assets/labtrack-logo-image?v=7");
 }
 
 body.home-terbuka {
