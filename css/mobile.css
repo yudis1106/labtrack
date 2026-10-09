@@ -1,0 +1,351 @@
+/* LabTrack - penyempurnaan tampilan HP/tablet */
+
+@media (max-width: 800px) {
+  html,
+  body {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  /* ===== Homepage ===== */
+  .home-screen {
+    min-width: 0;
+    min-height: 100svh;
+    padding:
+      calc(18px + env(safe-area-inset-top))
+      18px
+      calc(22px + env(safe-area-inset-bottom));
+  }
+
+  .home-kicker {
+    top: calc(4.6% + env(safe-area-inset-top));
+    left: 50%;
+    width: calc(100% - 34px);
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+    font-size: clamp(.72rem, 3.7vw, .92rem);
+    letter-spacing: .075em;
+  }
+
+  .home-center {
+    top: 48.5%;
+    width: calc(100% - 36px);
+    max-width: 430px;
+  }
+
+  .home-logo {
+    width: clamp(178px, 55vw, 235px);
+    filter: drop-shadow(0 14px 24px rgba(0, 20, 28, .3));
+  }
+
+  .home-title {
+    margin-top: 14px;
+    font-size: clamp(3rem, 13vw, 4.2rem);
+    line-height: 1;
+  }
+
+  .home-subtitle {
+    max-width: 350px;
+    margin-top: 14px;
+    padding: 0 6px;
+    font-size: clamp(.9rem, 4vw, 1rem);
+    line-height: 1.62;
+    letter-spacing: .01em;
+  }
+
+  .home-enter {
+    width: min(100%, 285px);
+    min-height: 52px;
+    margin-top: 24px;
+    padding: 12px 22px;
+    font-size: 1rem;
+  }
+
+  .home-studio {
+    right: auto;
+    bottom: calc(4.5% + env(safe-area-inset-bottom));
+    left: 50%;
+    width: calc(100% - 36px);
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+    font-size: clamp(1.05rem, 5vw, 1.4rem);
+  }
+
+  .home-edge {
+    top: calc(2% + env(safe-area-inset-top));
+    right: 7px;
+    height: 9%;
+  }
+
+  /* ===== Sidebar menjadi drawer di HP ===== */
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 120 !important;
+    width: min(82vw, 300px) !important;
+    padding:
+      calc(20px + env(safe-area-inset-top))
+      16px
+      calc(24px + env(safe-area-inset-bottom)) !important;
+    overflow-y: auto;
+    transform: translateX(0);
+    box-shadow: 12px 0 28px rgba(4, 31, 38, .22);
+  }
+
+  .sidebar .merek {
+    min-height: 48px;
+    padding: 0 48px 24px 6px !important;
+  }
+
+  .merek-logo {
+    width: 38px !important;
+    height: 38px !important;
+    flex-basis: 38px !important;
+  }
+
+  .merek-nama {
+    font-size: 1.22rem;
+  }
+
+  .menu {
+    flex-direction: column !important;
+    gap: 6px;
+    overflow: visible !important;
+    padding-bottom: 0 !important;
+  }
+
+  .menu-tombol {
+    width: 100% !important;
+    min-height: 46px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    font-size: .98rem;
+    white-space: normal !important;
+  }
+
+  .sidebar-toggle {
+    top: calc(18px + env(safe-area-inset-top)) !important;
+    right: 14px !important;
+    width: 38px;
+    height: 38px;
+  }
+
+  body.sidebar-tertutup .sidebar {
+    display: block !important;
+    transform: translateX(-105%) !important;
+  }
+
+  .sidebar-open-button {
+    top: calc(14px + env(safe-area-inset-top)) !important;
+    left: 14px !important;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    background: rgba(6, 31, 37, .4);
+    backdrop-filter: blur(2px);
+  }
+
+  .sidebar-backdrop:not([hidden]) {
+    display: block;
+  }
+
+  /* ===== Konten aplikasi ===== */
+  .konten,
+  body.sidebar-tertutup .konten {
+    width: 100%;
+    max-width: none !important;
+    margin-left: 0 !important;
+    padding:
+      calc(76px + env(safe-area-inset-top))
+      14px
+      calc(32px + env(safe-area-inset-bottom)) !important;
+  }
+
+  h2 {
+    font-size: 1.55rem;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+  }
+
+  .subjudul {
+    margin: 6px 0 18px;
+    font-size: .94rem;
+    line-height: 1.5;
+  }
+
+  .kartu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .kartu-ringkas {
+    min-width: 0;
+    padding: 14px 13px;
+  }
+
+  .kartu-angka {
+    font-size: 1.65rem;
+  }
+
+  .kartu-label {
+    font-size: .82rem;
+    line-height: 1.35;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .toolbar input,
+  .toolbar select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .form-kartu {
+    margin-bottom: 16px;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .form-grid label {
+    gap: 6px;
+    font-size: .9rem;
+  }
+
+  input,
+  select {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 11px;
+    font-size: 16px; /* mencegah auto-zoom Safari/iPhone */
+  }
+
+  input[type="file"] {
+    height: auto;
+    min-height: 46px;
+    padding: 8px;
+    font-size: .88rem;
+  }
+
+  .petunjuk {
+    line-height: 1.4;
+  }
+
+  .tombol {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  .form-grid .penuh .tombol {
+    width: 100%;
+  }
+
+  .pesan {
+    font-size: .9rem;
+  }
+
+  .tabel-bungkus {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabel {
+    min-width: 640px;
+    font-size: .86rem;
+  }
+
+  .tabel th,
+  .tabel td {
+    padding: 10px 12px;
+  }
+
+  dialog {
+    width: calc(100% - 28px);
+    max-height: 82svh;
+    padding: 20px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-kicker {
+    font-size: .7rem;
+    letter-spacing: .055em;
+  }
+
+  .home-logo {
+    width: 168px;
+  }
+
+  .home-title {
+    font-size: 2.85rem;
+  }
+
+  .home-subtitle {
+    font-size: .88rem;
+  }
+
+  .kartu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) and (max-height: 700px) {
+  .home-center {
+    top: 50%;
+  }
+
+  .home-logo {
+    width: min(42vw, 170px);
+  }
+
+  .home-title {
+    margin-top: 8px;
+    font-size: clamp(2.55rem, 10vw, 3.2rem);
+  }
+
+  .home-subtitle {
+    margin-top: 9px;
+    font-size: .86rem;
+    line-height: 1.45;
+  }
+
+  .home-enter {
+    min-height: 46px;
+    margin-top: 14px;
+  }
+
+  .home-studio {
+    bottom: calc(2.6% + env(safe-area-inset-bottom));
+    font-size: 1rem;
+  }
+}
