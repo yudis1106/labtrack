@@ -1,1 +1,312 @@
-PLACEHOLDER
+/* Homepage Labstrack - tampilan pembuka bergaya full-screen */
+:root {
+  --lab-logo: url("../assets/labtrack-logo.svg");
+}
+
+body.home-terbuka {
+  overflow: hidden;
+}
+
+.home-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  min-width: 320px;
+  min-height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(29, 194, 194, .42) 0%, rgba(15, 139, 141, .24) 33%, rgba(14, 58, 67, .08) 70%, transparent 100%),
+    linear-gradient(128deg, #0a3038 0%, #0f6f72 48%, #0b3f48 100%);
+  transition: opacity .48s ease, visibility .48s ease;
+}
+
+.home-screen::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse at 18% 20%, rgba(62, 214, 211, .18), transparent 38%),
+    radial-gradient(ellipse at 82% 82%, rgba(22, 164, 166, .22), transparent 42%),
+    radial-gradient(ellipse at 52% 48%, rgba(255,255,255,.06), transparent 42%);
+  filter: blur(24px);
+}
+
+.home-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .18;
+  background-image:
+    linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at 50% 48%, #000 0%, rgba(0,0,0,.82) 38%, transparent 78%);
+}
+
+.home-screen.keluar {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.home-kicker {
+  position: absolute;
+  top: 6.2%;
+  left: 4.2%;
+  margin: 0;
+  font-size: clamp(1.05rem, 2vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.92);
+}
+
+.home-kicker span {
+  color: #73efeb;
+}
+
+.home-center {
+  position: absolute;
+  top: 47.5%;
+  left: 50%;
+  display: flex;
+  width: min(620px, 82vw);
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.home-logo {
+  width: clamp(190px, 28vw, 360px);
+  aspect-ratio: 1;
+  background-image: var(--lab-logo);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  filter: drop-shadow(0 18px 34px rgba(0, 20, 28, .34));
+}
+
+.home-title {
+  margin: clamp(10px, 1.4vh, 18px) 0 0;
+  font-size: clamp(2.45rem, 5.8vw, 5.5rem);
+  font-weight: 700;
+  line-height: .98;
+  letter-spacing: -.045em;
+  text-shadow: 0 3px 12px rgba(1, 30, 35, .2);
+}
+
+.home-subtitle {
+  margin: 12px 0 0;
+  max-width: 620px;
+  color: rgba(235, 255, 255, .78);
+  font-size: clamp(.92rem, 1.35vw, 1.08rem);
+  letter-spacing: .025em;
+}
+
+.home-enter {
+  margin-top: 26px;
+  padding: 11px 22px;
+  border: 1px solid rgba(255,255,255,.46);
+  border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: .01em;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 24px rgba(2, 38, 44, .18);
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.home-enter:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.2);
+  border-color: rgba(255,255,255,.72);
+}
+
+.home-enter:focus-visible {
+  outline: 3px solid #8ff5f1;
+  outline-offset: 4px;
+}
+
+.home-studio {
+  position: absolute;
+  right: 4.2%;
+  bottom: 6.3%;
+  margin: 0;
+  white-space: nowrap;
+  font-size: clamp(1.2rem, 2.7vw, 2.7rem);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -.03em;
+  color: rgba(255,255,255,.9);
+}
+
+.home-edge {
+  position: absolute;
+  top: 2%;
+  right: .8%;
+  width: 2px;
+  height: 11%;
+  border-radius: 2px;
+  background: rgba(157, 248, 244, .65);
+  box-shadow: 0 0 12px rgba(126, 246, 241, .2);
+}
+
+/* Pakai logo yang sama pada sidebar agar identitas visual konsisten. */
+.merek-logo {
+  width: 34px !important;
+  height: 34px !important;
+  flex: 0 0 34px;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  background-image: var(--lab-logo) !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.merek-logo::after {
+  display: none !important;
+}
+
+.merek {
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.merek:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .home-kicker {
+    top: 5.2%;
+    left: 7%;
+  }
+
+  .home-center {
+    top: 48%;
+    width: 88vw;
+  }
+
+  .home-logo {
+    width: min(64vw, 310px);
+  }
+
+  .home-title {
+    font-size: clamp(2.6rem, 12vw, 4.6rem);
+  }
+
+  .home-studio {
+    right: 7%;
+    bottom: 6.5%;
+    font-size: clamp(1.15rem, 5vw, 2rem);
+  }
+}
+
+@media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 7/5) {
+  .home-center {
+    top: 49%;
+  }
+
+  .home-logo {
+    width: min(39vw, 44svh);
+  }
+}
+
+@media (min-aspect-ratio: 7/5) and (max-height: 500px) {
+  .home-kicker {
+    top: 5%;
+    font-size: clamp(.9rem, 2.2vw, 1.25rem);
+  }
+
+  .home-center {
+    top: 49%;
+  }
+
+  .home-logo {
+    width: min(24vw, 49svh);
+  }
+
+  .home-title {
+    margin-top: 2px;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+  }
+
+  .home-subtitle {
+    display: none;
+  }
+
+  .home-enter {
+    margin-top: 10px;
+    padding: 8px 18px;
+  }
+
+  .home-studio {
+    bottom: 5%;
+    font-size: clamp(1rem, 2.8vw, 1.7rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-screen:not(.keluar) .home-kicker {
+    animation: home-brand .8s cubic-bezier(.16,1,.3,1) .08s backwards;
+  }
+
+  .home-screen:not(.keluar) .home-logo {
+    animation: home-logo .95s cubic-bezier(.16,1,.3,1) .16s backwards;
+  }
+
+  .home-screen:not(.keluar) .home-title,
+  .home-screen:not(.keluar) .home-subtitle {
+    animation: home-up .8s cubic-bezier(.16,1,.3,1) .48s backwards;
+  }
+
+  .home-screen:not(.keluar) .home-enter {
+    animation: home-up .72s cubic-bezier(.16,1,.3,1) .64s backwards;
+  }
+
+  .home-screen:not(.keluar) .home-studio {
+    animation: home-studio .82s cubic-bezier(.16,1,.3,1) .7s backwards;
+  }
+
+  .home-screen:not(.keluar) .home-edge {
+    transform-origin: 50% 0;
+    animation: home-edge .6s cubic-bezier(.22,1,.36,1) .2s backwards;
+  }
+
+  @keyframes home-brand {
+    from { opacity: 0; transform: translateY(22px); clip-path: inset(0 0 100% 0); }
+  }
+
+  @keyframes home-logo {
+    from { opacity: 0; transform: translateY(18px) scale(.88) rotate(-3deg); }
+  }
+
+  @keyframes home-up {
+    from { opacity: 0; transform: translateY(18px); }
+  }
+
+  @keyframes home-studio {
+    from { opacity: 0; transform: translateY(18px); clip-path: inset(100% 0 0 0); }
+  }
+
+  @keyframes home-edge {
+    from { opacity: 0; transform: scaleY(0); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-screen,
+  .home-enter {
+    transition: none !important;
+  }
+}
