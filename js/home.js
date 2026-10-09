@@ -9,7 +9,7 @@
   document.body.classList.add("home-terbuka");
   merek?.setAttribute("role", "button");
   merek?.setAttribute("tabindex", "0");
-  merek?.setAttribute("aria-label", "Kembali ke homepage Labstrack");
+  merek?.setAttribute("aria-label", "Kembali ke homepage LabTrack");
 
   function bukaAplikasi() {
     home.classList.add("keluar");
