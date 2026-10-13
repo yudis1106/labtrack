@@ -8,7 +8,6 @@
   <title>LabTrack - Inventaris dan Peminjaman Alat Lab</title>
   <link rel="icon" type="image/png" href="/assets/labtrack-logo-image?v=7">
 
-  <!-- Font IBM Plex Sans dari Google Fonts. Kalau offline, browser memakai font cadangan. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,99 +16,84 @@
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/advanced.css">
 </head>
 <body>
 
-  <!-- ===== HOMEPAGE / LANDING PAGE ===== -->
   <section id="home-screen" class="home-screen" aria-label="Homepage LabTrack">
     <p class="home-kicker">Laboratory <span>Tracking System</span></p>
-
     <div class="home-center">
       <div class="home-logo" role="img" aria-label="Logo LabTrack bertema PLC, sistem kontrol, kelistrikan, gear, dan konektivitas"></div>
       <h1 class="home-title">LabTrack</h1>
       <p class="home-subtitle">Sistem inventaris dan peminjaman alat laboratorium untuk pencatatan yang lebih rapi, cepat, dan terkontrol.</p>
       <button type="button" id="home-enter" class="home-enter">Masuk Dashboard</button>
     </div>
-
     <p class="home-studio">Inventory &amp; Loan System</p>
     <span class="home-edge" aria-hidden="true"></span>
   </section>
 
-  <!-- ===== SIDEBAR / MENU NAVIGASI ===== -->
   <aside class="sidebar" id="sidebar-menu">
     <button type="button" id="sidebar-close" class="sidebar-toggle" aria-label="Tutup menu samping" aria-controls="sidebar-menu" aria-expanded="true">‹</button>
-
     <div class="merek">
       <span class="merek-logo" aria-hidden="true"></span>
       <span class="merek-nama">LabTrack</span>
     </div>
-
     <nav class="menu" aria-label="Menu utama">
       <button class="menu-tombol" data-target="dashboard">Dashboard</button>
       <button class="menu-tombol" data-target="inventaris">Inventaris</button>
       <button class="menu-tombol" data-target="peminjaman">Peminjaman</button>
       <button class="menu-tombol" data-target="riwayat">Riwayat</button>
+      <button class="menu-tombol" data-target="admin">Admin</button>
     </nav>
   </aside>
 
   <button type="button" id="sidebar-open" class="sidebar-open-button" aria-label="Buka menu samping" aria-controls="sidebar-menu" aria-expanded="false" hidden>☰</button>
-  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden aria-hidden="true"></div>
 
-  <!-- ===== KONTEN UTAMA ===== -->
   <main class="konten">
-
-    <!-- Section 1: Dashboard -->
     <section id="dashboard" class="halaman">
-      <h2>Dashboard</h2>
-      <p class="subjudul">Ringkasan alat dan peminjaman terbaru.</p>
-      <div class="kartu-grid">
+      <div class="judul-baris">
+        <div><h2>Dashboard</h2><p class="subjudul">Ringkasan alat, deadline, dan aktivitas peminjaman.</p></div>
+      </div>
+      <div class="kartu-grid kartu-grid-lima">
         <div class="kartu-ringkas"><span class="kartu-angka" id="kartu-total">0</span><span class="kartu-label">Total alat</span></div>
         <div class="kartu-ringkas hijau"><span class="kartu-angka" id="kartu-tersedia">0</span><span class="kartu-label">Tersedia</span></div>
         <div class="kartu-ringkas biru"><span class="kartu-angka" id="kartu-dipinjam">0</span><span class="kartu-label">Sedang dipinjam</span></div>
         <div class="kartu-ringkas kuning"><span class="kartu-angka" id="kartu-periksa">0</span><span class="kartu-label">Perlu diperiksa</span></div>
+        <div class="kartu-ringkas merah"><span class="kartu-angka" id="kartu-terlambat">0</span><span class="kartu-label">Terlambat</span></div>
+      </div>
+      <div id="peringatan-deadline" class="deadline-panel"></div>
+      <div class="dashboard-dua-kolom">
+        <section class="panel-dashboard">
+          <div class="panel-dashboard-head"><h3>Tren peminjaman 6 bulan</h3><span class="teks-kecil">Jumlah transaksi</span></div>
+          <canvas id="grafik-peminjaman" height="190" aria-label="Grafik peminjaman enam bulan"></canvas>
+        </section>
+        <section class="panel-dashboard">
+          <div class="panel-dashboard-head"><h3>Alat paling sering dipinjam</h3><span class="teks-kecil">Berdasarkan jumlah unit</span></div>
+          <div id="alat-populer" class="alat-populer"></div>
+        </section>
       </div>
       <h3>Peminjaman terbaru</h3>
       <div class="tabel-bungkus">
-        <table class="tabel">
-          <thead><tr><th>Peminjam</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Deadline</th><th>Status</th></tr></thead>
-          <tbody id="isi-dashboard"></tbody>
-        </table>
+        <table class="tabel"><thead><tr><th>No. transaksi</th><th>Peminjam</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Deadline</th><th>Status</th></tr></thead><tbody id="isi-dashboard"></tbody></table>
       </div>
     </section>
 
-    <!-- Section 2: Inventaris -->
     <section id="inventaris" class="halaman">
-      <h2>Inventaris</h2>
-      <p class="subjudul">Daftar alat laboratorium dan ketersediaannya.</p>
+      <div class="judul-baris">
+        <div><h2>Inventaris</h2><p class="subjudul">Daftar alat laboratorium dan ketersediaannya.</p></div>
+        <button type="button" id="tambah-alat" class="tombol admin-only" hidden>+ Tambah alat</button>
+      </div>
       <div class="toolbar">
         <input type="search" id="cari-alat" placeholder="Cari nama alat..." aria-label="Cari alat">
         <select id="filter-kategori" aria-label="Filter kategori">
-          <option value="">Semua kategori</option>
-          <option>Alat Ukur</option>
-          <option>Komponen Elektronika</option>
-          <option>Mikrokontroler</option>
-          <option>Sensor</option>
-          <option>Peralatan</option>
+          <option value="">Semua kategori</option><option>Alat Ukur</option><option>Komponen Elektronika</option><option>Mikrokontroler</option><option>Sensor</option><option>Peralatan</option>
         </select>
       </div>
       <div class="tabel-bungkus">
-        <table class="tabel">
-          <thead>
-            <tr>
-              <th>Nama alat</th>
-              <th>Kategori</th>
-              <th class="angka">Total</th>
-              <th class="angka">Tersedia</th>
-              <th>Kondisi</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="isi-inventaris"></tbody>
-        </table>
+        <table class="tabel"><thead><tr><th>Nama alat</th><th>Kategori</th><th class="angka">Total</th><th class="angka">Tersedia</th><th>Kondisi</th><th>Aksi</th></tr></thead><tbody id="isi-inventaris"></tbody></table>
       </div>
     </section>
 
-    <!-- Section 3: Peminjaman -->
     <section id="peminjaman" class="halaman">
       <h2>Peminjaman</h2>
       <p class="subjudul">Catat peminjaman, deadline pengembalian, dan foto KTM.</p>
@@ -122,70 +106,72 @@
           <label>Tanggal peminjaman <input type="date" id="input-tanggal"></label>
           <label>Deadline pengembalian <input type="date" id="input-deadline"></label>
           <label>Keperluan <input type="text" id="input-keperluan" autocomplete="off"></label>
-          <label>
-            Foto KTM
-            <input type="file" id="input-ktm" accept="image/jpeg,image/png">
-            <small class="petunjuk">JPG/PNG, maksimal 5 MB. Disimpan privat dan dihapus saat alat dikembalikan.</small>
-          </label>
+          <label>Foto KTM <input type="file" id="input-ktm" accept="image/jpeg,image/png"><small class="petunjuk">JPG/PNG, maksimal 5 MB. Disimpan privat dan dihapus saat alat dikembalikan.</small></label>
           <div class="penuh"><button type="submit" class="tombol">Pinjam</button></div>
         </div>
       </form>
       <p id="pesan-form" class="pesan" role="status"></p>
       <div class="tabel-bungkus">
-        <table class="tabel">
-          <thead>
-            <tr>
-              <th>Peminjam</th>
-              <th>NIM</th>
-              <th>Alat</th>
-              <th class="angka">Jumlah</th>
-              <th>Tanggal pinjam</th>
-              <th>Deadline</th>
-              <th>Keperluan</th>
-              <th>KTM</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="isi-peminjaman"></tbody>
-        </table>
+        <table class="tabel"><thead><tr><th>No. transaksi</th><th>Peminjam</th><th>NIM</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Deadline</th><th>Keperluan</th><th>KTM</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="isi-peminjaman"></tbody></table>
       </div>
     </section>
 
-    <!-- Section 4: Riwayat -->
     <section id="riwayat" class="halaman">
       <h2>Riwayat</h2>
-      <p class="subjudul">Peminjaman yang sudah dikembalikan. Foto KTM otomatis dihapus.</p>
+      <p class="subjudul">Cari riwayat berdasarkan NIM, alat, dan keterlambatan.</p>
+      <div class="toolbar toolbar-riwayat">
+        <input type="search" id="filter-riwayat-nim" placeholder="Cari nama / NIM / transaksi..." aria-label="Cari riwayat berdasarkan nama, NIM, atau transaksi">
+        <select id="filter-riwayat-alat" aria-label="Filter alat"><option value="">Semua alat</option></select>
+        <select id="filter-riwayat-status" aria-label="Filter status riwayat"><option value="">Semua pengembalian</option><option value="tepat">Tepat waktu</option><option value="terlambat">Terlambat</option></select>
+      </div>
       <div class="tabel-bungkus">
-        <table class="tabel">
-          <thead>
-            <tr>
-              <th>Peminjam</th>
-              <th>NIM</th>
-              <th>Alat</th>
-              <th class="angka">Jumlah</th>
-              <th>Tanggal pinjam</th>
-              <th>Deadline</th>
-              <th>Tanggal kembali</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="isi-riwayat"></tbody>
-        </table>
+        <table class="tabel"><thead><tr><th>No. transaksi</th><th>Peminjam</th><th>NIM</th><th>Alat</th><th class="angka">Jumlah</th><th>Tanggal pinjam</th><th>Deadline</th><th>Tanggal kembali</th><th>Kondisi kembali</th><th>Status</th></tr></thead><tbody id="isi-riwayat"></tbody></table>
       </div>
     </section>
 
+    <section id="admin" class="halaman">
+      <h2>Admin</h2>
+      <p class="subjudul">Login diperlukan untuk menambah, mengedit, atau menonaktifkan inventaris.</p>
+      <div id="admin-belum-konfigurasi" class="info-box" hidden>Login admin belum aktif. Saat fitur ini diterapkan, tambahkan <code>FLASK_SECRET_KEY</code>, <code>ADMIN_USERNAME</code>, dan <code>ADMIN_PASSWORD_HASH</code> ke Environment Variables Vercel.</div>
+      <form id="form-admin-login" class="form-kartu admin-login" novalidate>
+        <h3>Login admin</h3>
+        <div class="form-grid">
+          <label>Username <input type="text" id="admin-username" autocomplete="username"></label>
+          <label>Password <input type="password" id="admin-password" autocomplete="current-password"></label>
+          <div class="penuh"><button type="submit" class="tombol">Login</button></div>
+        </div>
+      </form>
+      <div id="admin-sudah-login" class="panel-dashboard" hidden><h3>Admin aktif</h3><p>Kamu dapat menambah, mengedit, dan menonaktifkan alat melalui menu Inventaris.</p><button type="button" id="admin-logout" class="tombol tombol-garis">Logout</button></div>
+      <p id="pesan-admin" class="pesan" role="status"></p>
+    </section>
   </main>
 
-  <!-- Popup detail alat -->
-  <dialog id="dialog-detail">
-    <div id="isi-detail"></div>
-    <button type="button" class="tombol tombol-garis" id="tutup-detail">Tutup</button>
+  <dialog id="dialog-detail" class="dialog-lebar"><div id="isi-detail"></div><div class="dialog-actions"><button type="button" class="tombol tombol-garis" id="tutup-detail">Tutup</button></div></dialog>
+
+  <dialog id="dialog-kembali">
+    <form id="form-kembali" method="dialog">
+      <h3>Konfirmasi pengembalian</h3><p class="teks-kecil">Foto KTM akan dihapus otomatis setelah pengembalian berhasil.</p>
+      <input type="hidden" id="kembali-id">
+      <label class="dialog-label">Kondisi alat saat kembali<select id="kembali-kondisi" required><option value="Baik">Baik</option><option value="Rusak Ringan">Rusak ringan</option><option value="Rusak">Rusak</option><option value="Perlu Diperiksa">Perlu diperiksa</option></select></label>
+      <label class="dialog-label">Catatan (opsional)<textarea id="kembali-catatan" maxlength="500" rows="4" placeholder="Contoh: kabel probe longgar"></textarea></label>
+      <div class="dialog-actions"><button type="button" class="tombol tombol-garis" id="batal-kembali">Batal</button><button type="submit" class="tombol">Simpan pengembalian</button></div>
+    </form>
   </dialog>
 
-  <script src="js/app.js"></script>
+  <dialog id="dialog-alat">
+    <form id="form-alat" method="dialog">
+      <h3 id="judul-form-alat">Tambah alat</h3><input type="hidden" id="alat-id-edit">
+      <div class="form-grid form-grid-dialog">
+        <label>Nama alat <input type="text" id="alat-nama" required></label><label>Kategori <input type="text" id="alat-kategori" required></label>
+        <label>Total <input type="number" id="alat-total" min="0" required></label><label>Kondisi <select id="alat-kondisi"><option>Baik</option><option>Rusak Ringan</option><option>Rusak</option><option>Perlu Diperiksa</option></select></label>
+        <label>Lokasi <input type="text" id="alat-lokasi" required></label><label class="penuh">Deskripsi <textarea id="alat-deskripsi" rows="4"></textarea></label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="tombol tombol-garis" id="batal-alat">Batal</button><button type="submit" class="tombol">Simpan</button></div>
+    </form>
+  </dialog>
+
   <script src="js/home.js"></script>
   <script src="js/sidebar.js"></script>
-
+  <script src="js/app.js"></script>
 </body>
 </html>
