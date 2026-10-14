@@ -1,4 +1,4 @@
-/* Fitur lanjutan LabTrack - hanya dipakai pada branch feature/labtrack-complete */
+/* Fitur lanjutan LabTrack untuk dashboard, admin, detail alat, dan status peminjaman. */
 
 .label-merah { background: #fbe4e1; color: var(--merah); }
 .kartu-ringkas.merah { border-left-color: var(--merah); }
