@@ -1,6 +1,5 @@
--- LabTrack advanced features
--- IMPORTANT: file ini hanya rancangan migration untuk branch feature/labtrack-complete.
--- Jangan jalankan sebelum branch siap diterapkan ke production.
+-- LabTrack database migration
+-- Menambahkan fitur inventaris aktif, kode transaksi, dan data pengembalian.
 
 alter table public.alat
   add column if not exists aktif boolean not null default true;
