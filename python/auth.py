@@ -79,6 +79,96 @@ def status_auth():
     return core.jsonify({"berhasil": True, **autentikasi_status()})
 
 
+@app.get("/api/auth/data")
+def data_berdasarkan_role():
+    """Data aplikasi yang disesuaikan dengan akun aktif.
+
+    Admin menerima seluruh data. Mahasiswa hanya menerima transaksi dengan NIM
+    miliknya, sehingga dashboard dan riwayat pribadi tidak perlu mengambil data
+    transaksi mahasiswa lain.
+    """
+    status = autentikasi_status()
+    if not status.get("authenticated"):
+        return core.response_error("Login diperlukan.", 401)
+
+    try:
+        data = core.ambil_semua_data()
+        if status.get("role") == "mahasiswa":
+            nim = str(status.get("nim") or "")
+            data["peminjaman"] = [
+                item for item in data.get("peminjaman", [])
+                if str(item.get("nim") or "") == nim
+            ]
+        return core.jsonify({"berhasil": True, "role": status.get("role"), **data})
+    except Exception as error:
+        print("Gagal mengambil data sesuai role:", error)
+        return core.response_error("Gagal mengambil data akun.", 500)
+
+
+@app.patch("/api/auth/profile")
+def ubah_profile_mahasiswa():
+    mahasiswa = mahasiswa_session()
+    if mahasiswa is None:
+        return core.response_error("Login sebagai mahasiswa diperlukan.", 401)
+
+    try:
+        isi = request.get_json(silent=True) or {}
+        nama = str(isi.get("nama", mahasiswa.get("nama") or "")).strip()
+        email = str(isi.get("email", mahasiswa.get("email") or "")).strip().lower()
+        password_lama = str(isi.get("passwordLama", ""))
+        password_baru = str(isi.get("passwordBaru", ""))
+        konfirmasi = str(isi.get("konfirmasiPassword", ""))
+
+        if not nama:
+            return core.response_error("Nama tidak boleh kosong.")
+        if not EMAIL_RE.match(email):
+            return core.response_error("Format email tidak valid.")
+
+        email_ada = (
+            core.supabase.table("mahasiswa")
+            .select("id")
+            .eq("email", email)
+            .neq("id", mahasiswa["id"])
+            .limit(1)
+            .execute()
+        )
+        if email_ada.data:
+            return core.response_error("Email sudah digunakan akun lain.", 409)
+
+        perubahan = {"nama": nama, "email": email}
+
+        if password_baru or password_lama or konfirmasi:
+            if not password_lama:
+                return core.response_error("Masukkan password lama untuk mengganti password.")
+            if len(password_baru) < 6:
+                return core.response_error("Password baru minimal 6 karakter.")
+            if password_baru != konfirmasi:
+                return core.response_error("Konfirmasi password baru tidak sama.")
+            try:
+                lama_benar = check_password_hash(mahasiswa.get("password_hash") or "", password_lama)
+            except (ValueError, TypeError):
+                lama_benar = False
+            if not lama_benar:
+                return core.response_error("Password lama salah.", 401)
+            perubahan["password_hash"] = generate_password_hash(password_baru)
+
+        hasil = (
+            core.supabase.table("mahasiswa")
+            .update(perubahan)
+            .eq("id", mahasiswa["id"])
+            .execute()
+        )
+        row = hasil.data[0] if hasil.data else cari_mahasiswa_id(mahasiswa["id"])
+        return core.jsonify({
+            "berhasil": True,
+            "pesan": "Profil berhasil diperbarui.",
+            "akun": data_mahasiswa_aman(row),
+        })
+    except Exception as error:
+        print("Gagal memperbarui profil mahasiswa:", error)
+        return core.response_error("Gagal memperbarui profil.", 500)
+
+
 @app.post("/api/auth/register")
 def daftar_mahasiswa():
     try:
@@ -143,7 +233,7 @@ def login_auth():
     password = str(isi.get("password", ""))
 
     if not identitas or not password:
-        return core.response_error("NIM/username dan password wajib diisi.")
+        return core.response_error("NIM dan password wajib diisi.")
 
     # Admin tetap menggunakan kredensial environment variable yang sudah ada.
     if core.admin_terkonfigurasi():
@@ -207,12 +297,12 @@ def halaman_utama_dengan_auth():
     html = respons.get_data(as_text=True)
 
     if "css/auth.css" not in html:
-        html = html.replace("</head>", '  <link rel="stylesheet" href="css/auth.css">\n</head>')
+        html = html.replace("</head>", '  <link rel="stylesheet" href="css/auth.css">\n  <link rel="stylesheet" href="css/role-features.css">\n</head>')
 
     if "js/auth.js" not in html:
         html = html.replace(
             '<script src="js/home.js"></script>',
-            '<script src="js/auth.js"></script>\n  <script src="js/home.js"></script>',
+            '<script src="js/auth.js"></script>\n  <script src="js/role-features.js"></script>\n  <script src="js/home.js"></script>',
         )
 
     respons.set_data(html)
