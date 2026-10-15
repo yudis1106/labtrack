@@ -323,28 +323,45 @@ body.auth-modal-terbuka {
   color: rgba(255,255,255,.62);
 }
 
-/* Logout global tetap terlihat meski sidebar ditutup. */
+/* Logout global: lebih menyatu dengan antarmuka aplikasi, tidak seperti tombol mengambang besar. */
 .auth-logout-global {
   position: fixed;
-  top: 20px;
+  top: 22px;
   right: 24px;
   z-index: 10030;
-  min-width: 96px;
-  padding: 9px 16px;
-  border: 1px solid #0f8b8d;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #0f7477;
+  min-width: 88px;
+  min-height: 42px;
+  padding: 8px 15px;
+  border: 1px solid #c2dddd;
+  border-radius: 11px;
+  background: #eef8f8;
+  color: #0a7477;
   font: inherit;
+  font-size: .9rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 8px 22px rgba(8,54,62,.14);
-  transition: transform .2s ease, background .2s ease;
+  box-shadow: 0 5px 16px rgba(8,54,62,.07);
+  transition: transform .16s ease, background .16s ease, border-color .16s ease;
 }
 
 .auth-logout-global:hover {
-  background: #f2ffff;
+  background: #e2f4f4;
+  border-color: #8ec8c9;
   transform: translateY(-1px);
+}
+
+/* Di homepage gelap, Logout kembali memakai gaya kaca agar cocok dengan hero. */
+body.home-terbuka .auth-logout-global {
+  border-color: rgba(255,255,255,.4);
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0,20,28,.14);
+  backdrop-filter: blur(10px);
+}
+
+body.home-terbuka .auth-logout-global:hover {
+  background: rgba(255,255,255,.22);
+  border-color: rgba(255,255,255,.62);
 }
 
 .auth-logout-global[hidden] {
@@ -354,7 +371,7 @@ body.auth-modal-terbuka {
 /* Sisakan ruang di header halaman untuk tombol Logout agar tombol aksi seperti
    Tambah alat tidak tertutup ketika sidebar dibuka maupun ditutup. */
 .halaman .judul-baris {
-  padding-right: 132px;
+  padding-right: 126px;
 }
 
 @media (max-width: 680px) {
@@ -470,11 +487,12 @@ body.auth-modal-terbuka {
   .auth-logout-global {
     top: calc(14px + env(safe-area-inset-top));
     right: 14px;
-    min-width: 78px;
-    min-height: 44px;
-    padding: 8px 12px;
-    font-size: .86rem;
-    box-shadow: 0 7px 18px rgba(8,54,62,.12);
+    min-width: 76px;
+    min-height: 42px;
+    padding: 7px 11px;
+    border-radius: 10px;
+    font-size: .84rem;
+    box-shadow: 0 5px 14px rgba(8,54,62,.08);
   }
 
   /* Konten mobile sudah mempunyai padding atas untuk hamburger/logout,
