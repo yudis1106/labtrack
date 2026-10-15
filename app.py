@@ -268,5 +268,10 @@ def hapus_alat_dengan_reservasi(id_alat):
 app.view_functions["hapus_alat"] = hapus_alat_dengan_reservasi
 
 
+# Daftarkan autentikasi setelah seluruh override backend selesai supaya
+# pembungkus autentikasi melindungi endpoint production yang terbaru.
+from python import auth as _auth  # noqa: E402,F401
+
+
 if __name__ == "__main__":
     app.run(debug=True)
