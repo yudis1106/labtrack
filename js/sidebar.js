@@ -55,6 +55,23 @@
     if (simpan !== false) simpanStatusDesktop(tertutup);
   }
 
+  function bukaHalamanDinamis(idHalaman, tombolDipilih) {
+    // app.js menyimpan NodeList halaman saat pertama kali dimuat. Halaman Profil
+    // dibuat sesudahnya, jadi navigasi dinamis perlu membaca DOM terbaru.
+    document.querySelectorAll(".halaman").forEach(function (halaman) {
+      halaman.classList.toggle("aktif", halaman.id === idHalaman);
+    });
+
+    document.querySelectorAll(".menu-tombol").forEach(function (tombol) {
+      const aktif = tombol === tombolDipilih || tombol.dataset.target === idHalaman;
+      tombol.classList.toggle("aktif", aktif);
+      if (aktif) tombol.setAttribute("aria-current", "page");
+      else tombol.removeAttribute("aria-current");
+    });
+
+    window.scrollTo(0, 0);
+  }
+
   // Jika tombol logout dibuat setelah sidebar.js berjalan, sinkronkan lagi otomatis.
   const observerLogout = new MutationObserver(function () {
     sinkronkanLogout();
@@ -89,12 +106,20 @@
     }
   });
 
-  document.querySelectorAll(".menu-tombol").forEach(function (tombol) {
-    tombol.addEventListener("click", function () {
-      if (mediaHp.matches) {
-        aturSidebar(true, true);
-      }
-    });
+  // Delegasi dipakai supaya menu yang ditambahkan setelah halaman dimuat
+  // (contohnya Profil mahasiswa) tetap bekerja dan ikut menutup drawer di HP.
+  document.addEventListener("click", function (event) {
+    const tombol = event.target.closest(".menu-tombol");
+    if (!tombol || !sidebar.contains(tombol)) return;
+
+    const target = tombol.dataset.target;
+    if (target === "profil") {
+      bukaHalamanDinamis(target, tombol);
+    }
+
+    if (mediaHp.matches) {
+      aturSidebar(true, true);
+    }
   });
 
   // Jika ukuran layar berubah, sesuaikan perilaku sidebar secara otomatis.
