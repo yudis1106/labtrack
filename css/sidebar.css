@@ -5,7 +5,7 @@
 }
 
 .konten {
-  transition: margin-left 0.28s ease, padding-left 0.28s ease, max-width 0.28s ease;
+  transition: margin-left 0.28s ease, padding-left 0.28s ease, padding-right 0.28s ease, max-width 0.28s ease;
 }
 
 /* Tombol panah saat sidebar sedang terbuka */
@@ -83,10 +83,14 @@ body.sidebar-tertutup .sidebar-open-button {
   display: flex;
 }
 
+/* Saat sidebar ditutup, konten memakai hampir seluruh lebar layar.
+   Ruang kiri hanya disisakan untuk tombol hamburger. */
 body.sidebar-tertutup .konten {
   margin-left: 0;
-  padding-left: 76px;
-  max-width: 1320px;
+  width: 100%;
+  max-width: none;
+  padding-left: 82px;
+  padding-right: 36px;
 }
 
 @media (max-width: 800px) {
@@ -107,6 +111,7 @@ body.sidebar-tertutup .konten {
 
   body.sidebar-tertutup .konten {
     margin-left: 0;
+    width: 100%;
     padding: 70px 16px 24px;
     max-width: none;
   }
