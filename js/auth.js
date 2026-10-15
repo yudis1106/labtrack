@@ -68,7 +68,9 @@
     </div>
   `;
 
-  homeCenter.insertBefore(panel, tombolMasukDashboard);
+  // Panel autentikasi ditempatkan langsung pada homepage, bukan di dalam
+  // home-center. Ini mencegah panel ikut terkena transform posisi logo/judul.
+  home.appendChild(panel);
 
   const formLogin = document.getElementById("auth-form-login");
   const formDaftar = document.getElementById("auth-form-daftar");
