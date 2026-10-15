@@ -117,6 +117,7 @@
 
   function perbaruiSidebar() {
     if (!sidebar) return;
+
     let box = document.getElementById("auth-sidebar-account");
     if (!box) {
       box = document.createElement("div");
@@ -125,18 +126,29 @@
       sidebar.appendChild(box);
     }
 
+    let logoutGlobal = document.getElementById("auth-logout-global");
+    if (!logoutGlobal) {
+      logoutGlobal = document.createElement("button");
+      logoutGlobal.type = "button";
+      logoutGlobal.id = "auth-logout-global";
+      logoutGlobal.className = "auth-logout-global";
+      logoutGlobal.textContent = "Logout";
+      logoutGlobal.addEventListener("click", logout);
+      document.body.appendChild(logoutGlobal);
+    }
+
     if (!akunAktif?.authenticated) {
       box.hidden = true;
+      logoutGlobal.hidden = true;
       return;
     }
 
     box.hidden = false;
+    logoutGlobal.hidden = false;
     const identitas = akunAktif.role === "mahasiswa" ? akunAktif.nim : "Administrator";
     box.innerHTML = `
       <div><strong>${amanAuth(akunAktif.nama || (akunAktif.role === "admin" ? "Admin" : "Mahasiswa"))}</strong><small>${amanAuth(identitas)}</small></div>
-      <button type="button" id="auth-logout" class="tombol tombol-garis tombol-kecil">Logout</button>
     `;
-    document.getElementById("auth-logout")?.addEventListener("click", logout);
   }
 
   function amanAuth(teks) {
