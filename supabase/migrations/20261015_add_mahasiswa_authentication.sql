@@ -18,3 +18,8 @@ create index if not exists mahasiswa_nim_idx
 
 create index if not exists mahasiswa_email_idx
   on public.mahasiswa (lower(email));
+
+-- Backend LabTrack menggunakan Supabase service role untuk membaca dan
+-- menyimpan akun mahasiswa. Berikan hanya hak yang memang dibutuhkan backend.
+grant select, insert, update on table public.mahasiswa to service_role;
+grant usage, select on sequence public.mahasiswa_id_seq to service_role;
