@@ -28,6 +28,16 @@
     }
   }
 
+  function sinkronkanLogout() {
+    const logout = document.getElementById("auth-logout-global");
+    if (!logout) return;
+
+    // Di homepage tombol logout tetap boleh terlihat.
+    // Di dalam aplikasi, tombol logout hanya tampil saat sidebar terbuka.
+    const sembunyikan = body.classList.contains("sidebar-tertutup") && !body.classList.contains("home-terbuka");
+    logout.style.display = sembunyikan ? "none" : "";
+  }
+
   function aturSidebar(tertutup, simpan) {
     const sedangDiHp = mediaHp.matches;
 
@@ -41,8 +51,15 @@
       backdrop.hidden = !sedangDiHp || tertutup;
     }
 
+    sinkronkanLogout();
     if (simpan !== false) simpanStatusDesktop(tertutup);
   }
+
+  // Jika tombol logout dibuat setelah sidebar.js berjalan, sinkronkan lagi otomatis.
+  const observerLogout = new MutationObserver(function () {
+    sinkronkanLogout();
+  });
+  observerLogout.observe(body, { childList: true });
 
   // Di HP selalu mulai dalam keadaan tertutup supaya konten langsung terlihat.
   const statusAwal = mediaHp.matches ? true : ambilStatusDesktop();
