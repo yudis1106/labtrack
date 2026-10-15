@@ -1,0 +1,371 @@
+/* LabTrack - fitur khusus Mahasiswa dan Admin */
+
+.role-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.role-section-title h3 {
+  margin: 0;
+}
+
+.role-section-title p {
+  margin: 4px 0 0;
+  color: var(--teks-redup, #66777c);
+  font-size: .9rem;
+}
+
+.role-link-button {
+  border: 0;
+  background: transparent;
+  color: var(--aksen, #15979d);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.role-student-loans {
+  margin-bottom: 22px;
+}
+
+.role-loan-list {
+  display: grid;
+  gap: 10px;
+}
+
+.role-loan-item {
+  display: grid;
+  grid-template-columns: 44px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--garis, #dce7e9);
+}
+
+.role-loan-item:first-child {
+  border-top: 0;
+}
+
+.role-loan-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--aksen-terang, #d7f0f0);
+  color: var(--sidebar, #0e3a43);
+  font-weight: 800;
+}
+
+.role-loan-main,
+.role-loan-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.role-loan-main span,
+.role-loan-meta small,
+.role-deadline-row span,
+.role-empty span,
+.role-profile-summary span,
+.role-admin-highlight small {
+  color: var(--teks-redup, #66777c);
+  font-size: .86rem;
+}
+
+.role-loan-meta {
+  align-items: flex-end;
+}
+
+.role-status {
+  width: fit-content;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 700;
+  background: #edf3f4;
+}
+
+.role-status.diajukan { background: #fff3d8; color: #a36600; }
+.role-status.disetujui { background: #e6f0ff; color: #2367b1; }
+.role-status.dipinjam { background: #e0f1ff; color: #176da2; }
+.role-status.dikembalikan { background: #e1f5e8; color: #16834d; }
+.role-status.ditolak { background: #ffe7e5; color: #b02b23; }
+
+.role-deadline-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 0;
+  border-top: 1px solid var(--garis, #dce7e9);
+}
+
+.role-deadline-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.role-deadline-row > div:last-child {
+  text-align: right;
+}
+
+.role-deadline-row.late strong:last-child {
+  color: #b42318;
+}
+
+.role-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 0;
+}
+
+.mode-mahasiswa #dashboard .dashboard-dua-kolom,
+.mode-mahasiswa #dashboard > h3,
+.mode-mahasiswa #dashboard > .tabel-bungkus {
+  display: none;
+}
+
+.role-profile-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 290px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.role-profile-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 28px 20px;
+  border: 1px solid var(--garis, #dce7e9);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(18,58,66,.06);
+}
+
+.role-profile-avatar {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 4px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--aksen, #16979d), var(--sidebar, #0e3a43));
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.role-profile-summary strong {
+  font-size: 1.08rem;
+}
+
+.role-chip {
+  margin-top: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--aksen-terang, #d7f0f0);
+  color: var(--sidebar, #0e3a43) !important;
+  font-weight: 700;
+  font-size: .78rem !important;
+}
+
+.role-profile-form {
+  margin: 0;
+}
+
+.role-profile-divider {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 24px 0 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--garis, #dce7e9);
+}
+
+.role-profile-divider span {
+  font-weight: 700;
+}
+
+.role-profile-divider small {
+  color: var(--teks-redup, #66777c);
+}
+
+.role-profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.role-profile-actions .tombol {
+  min-width: 180px;
+}
+
+.role-admin-insights {
+  margin: 4px 0 22px;
+  padding: 18px;
+  border: 1px solid var(--garis, #dce7e9);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(23,57,65,.045);
+}
+
+.role-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 10px;
+}
+
+.role-admin-grid article {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 108px;
+  padding: 15px;
+  border-radius: 14px;
+  background: #f5f9fa;
+}
+
+.role-admin-grid article span,
+.role-admin-grid article small {
+  color: var(--teks-redup, #66777c);
+  font-size: .82rem;
+}
+
+.role-admin-grid article strong {
+  margin-top: auto;
+  font-size: 1.7rem;
+  color: var(--sidebar, #0e3a43);
+}
+
+.role-admin-grid article.danger {
+  background: #fff0ef;
+}
+
+.role-admin-grid article.danger strong {
+  color: #b42318;
+}
+
+.role-admin-highlight {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 14px 15px;
+  border-radius: 12px;
+  background: var(--aksen-terang, #d7f0f0);
+}
+
+.role-admin-highlight span {
+  color: var(--sidebar, #0e3a43);
+  font-size: .84rem;
+  font-weight: 700;
+}
+
+.role-admin-highlight strong {
+  text-align: center;
+}
+
+.role-table-empty {
+  padding: 26px !important;
+  text-align: center;
+  color: var(--teks-redup, #66777c);
+}
+
+@media (max-width: 900px) {
+  .role-profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .role-profile-summary {
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+  }
+
+  .role-profile-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 17px;
+    margin: 0 4px 0 0;
+  }
+
+  .role-profile-summary .role-chip {
+    margin-left: auto;
+    margin-top: 0;
+  }
+
+  .role-admin-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .role-section-title {
+    align-items: flex-start;
+  }
+
+  .role-loan-item {
+    grid-template-columns: 40px minmax(0,1fr);
+  }
+
+  .role-loan-meta {
+    grid-column: 2;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .role-deadline-row {
+    gap: 12px;
+  }
+
+  .role-profile-divider {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .role-profile-actions .tombol {
+    width: 100%;
+  }
+
+  .role-admin-highlight {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .role-admin-highlight strong {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .role-admin-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .role-admin-grid article {
+    min-height: 96px;
+    padding: 12px;
+  }
+
+  .role-profile-summary {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+  }
+
+  .role-profile-summary .role-chip {
+    grid-column: 2;
+    margin-left: 0;
+  }
+}
