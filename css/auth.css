@@ -20,31 +20,37 @@
   margin-top: 14px;
 }
 
+/* Tombol Login / Daftar ditempatkan di pojok kanan atas agar homepage lebih bersih. */
 .auth-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 10px;
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 10020;
+  display: flex;
+  gap: 6px;
+  margin: 0;
   padding: 5px;
-  border: 1px solid rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.28);
   border-radius: 14px;
-  background: rgba(0, 28, 34, .18);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 28, 34, .28);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 24px rgba(0,20,28,.14);
 }
 
 .auth-tab {
-  padding: 9px 12px;
+  padding: 9px 14px;
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: rgba(255,255,255,.72);
+  color: rgba(255,255,255,.78);
   font: inherit;
   font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
 }
 
 .auth-tab.aktif {
-  background: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.18);
   color: #fff;
   box-shadow: 0 5px 14px rgba(0,0,0,.12);
 }
@@ -142,7 +148,27 @@
 .auth-sidebar-account > div { display: grid; gap: 2px; }
 .auth-sidebar-account strong { color: #fff; font-size: .9rem; }
 .auth-sidebar-account small { color: rgba(255,255,255,.62); }
-.auth-sidebar-account .tombol { width: 100%; }
+
+/* Tombol logout memakai tombol yang sudah ada, tetapi dipindahkan ke kanan atas. */
+#auth-logout {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  z-index: 10020;
+  width: auto !important;
+  min-width: 96px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid #0f8b8d;
+  background: rgba(255,255,255,.96);
+  color: #0f7477;
+  box-shadow: 0 8px 22px rgba(8,54,62,.15);
+}
+
+#auth-logout:hover {
+  background: #f4ffff;
+  transform: translateY(-1px);
+}
 
 @media (max-width: 680px) {
   .auth-panel {
@@ -154,4 +180,23 @@
   }
 
   .auth-submit { grid-column: 1; }
+
+  .auth-tabs {
+    top: 12px;
+    right: 12px;
+    gap: 3px;
+    padding: 4px;
+  }
+
+  .auth-tab {
+    padding: 7px 9px;
+    font-size: .78rem;
+  }
+
+  #auth-logout {
+    top: 12px;
+    right: 12px;
+    min-width: 82px;
+    padding: 8px 13px;
+  }
 }
