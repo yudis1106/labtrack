@@ -88,7 +88,7 @@
     z-index: 120 !important;
     width: min(84vw, 310px) !important;
     padding:
-      calc(20px + env(safe-area-inset-top))
+      calc(18px + env(safe-area-inset-top))
       16px
       calc(24px + env(safe-area-inset-bottom)) !important;
     overflow-y: auto;
@@ -97,18 +97,22 @@
   }
 
   .sidebar .merek {
-    min-height: 50px;
-    padding: 0 48px 24px 6px !important;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 54px 20px 4px !important;
+    gap: 10px;
   }
 
   .merek-logo {
-    width: 38px !important;
-    height: 38px !important;
-    flex-basis: 38px !important;
+    width: 36px !important;
+    height: 36px !important;
+    flex-basis: 36px !important;
   }
 
   .merek-nama {
-    font-size: 1.22rem;
+    font-size: 1.2rem;
+    line-height: 1;
   }
 
   .menu {
@@ -128,10 +132,18 @@
   }
 
   .sidebar-toggle {
-    top: calc(18px + env(safe-area-inset-top)) !important;
+    top: calc(17px + env(safe-area-inset-top)) !important;
     right: 14px !important;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+  }
+
+  .sidebar-toggle::before {
+    width: 9px;
+    height: 9px;
+    border-left-width: 2px;
+    border-bottom-width: 2px;
   }
 
   body.sidebar-tertutup .sidebar {
@@ -142,9 +154,10 @@
   .sidebar-open-button {
     top: calc(14px + env(safe-area-inset-top)) !important;
     left: 14px !important;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    font-size: 1.25rem;
   }
 
   .sidebar-backdrop {
@@ -166,7 +179,7 @@
     max-width: none !important;
     margin-left: 0 !important;
     padding:
-      calc(82px + env(safe-area-inset-top))
+      calc(84px + env(safe-area-inset-top))
       14px
       calc(34px + env(safe-area-inset-bottom)) !important;
   }
@@ -359,6 +372,14 @@
   body.sidebar-tertutup .konten {
     padding-left: 11px !important;
     padding-right: 11px !important;
+  }
+
+  .sidebar {
+    width: min(88vw, 300px) !important;
+  }
+
+  .sidebar .merek {
+    padding-left: 2px !important;
   }
 
   .kartu-grid {
