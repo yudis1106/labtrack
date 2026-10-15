@@ -300,3 +300,223 @@ dialog {
     border-radius: 13px;
   }
 }
+
+/* ===== Final polish: aksi, ruang, dan hierarki visual ===== */
+.konten {
+  width: calc(100% - var(--lebar-sidebar));
+  max-width: 1500px;
+  padding: 30px 34px 40px;
+}
+
+body:not(.sidebar-tertutup) .konten {
+  margin-left: var(--lebar-sidebar);
+  margin-right: auto;
+}
+
+body.sidebar-tertutup .konten {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 30px 34px 40px 86px;
+}
+
+/* Header kembali ringan; fokus utama ada di konten, bukan kartu besar di atas. */
+.judul-baris {
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.judul-baris > div:first-child { min-width: 0; }
+.judul-baris h2 { margin-bottom: 4px; }
+.judul-baris .subjudul { margin: 0; }
+
+.judul-baris > .tombol,
+#tambah-alat {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 11px;
+  box-shadow: 0 7px 18px rgba(15,139,141,.15);
+}
+
+/* Toolbar inventaris menjadi satu kelompok yang rapi. */
+#inventaris .toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 230px);
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 12px;
+  border: 1px solid var(--garis);
+  border-radius: 14px;
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 8px 24px rgba(20,50,58,.05);
+}
+
+#inventaris .toolbar input,
+#inventaris .toolbar select {
+  min-height: 46px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+#inventaris .tabel-bungkus {
+  border-radius: 14px;
+  overflow: auto;
+  box-shadow: 0 10px 28px rgba(20,50,58,.055);
+}
+
+#inventaris .tabel th {
+  height: 52px;
+  background: #d9eff0;
+  font-size: .93rem;
+}
+
+#inventaris .tabel td {
+  height: 58px;
+  background: #fff;
+}
+
+#inventaris .tabel tbody tr:hover td { background: #f7fbfb; }
+
+#inventaris .aksi-baris {
+  gap: 7px;
+  flex-wrap: nowrap;
+}
+
+#inventaris .aksi-baris .tombol,
+#inventaris .aksi-baris button {
+  min-height: 34px;
+  padding: 5px 11px;
+  border-radius: 9px;
+  white-space: nowrap;
+}
+
+/* Logout mengikuti sidebar supaya tidak bersaing dengan tombol Tambah alat. */
+.auth-sidebar-account { padding-bottom: 66px !important; }
+
+body:not(.sidebar-tertutup) .auth-logout-global:not([hidden]) {
+  top: auto !important;
+  right: auto !important;
+  bottom: 22px !important;
+  left: 16px !important;
+  width: calc(var(--lebar-sidebar) - 32px) !important;
+  min-height: 38px;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  border-radius: 10px !important;
+  background: rgba(255,255,255,.08) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  z-index: 160;
+}
+
+body:not(.sidebar-tertutup) .auth-logout-global:not([hidden]):hover {
+  background: rgba(255,255,255,.15) !important;
+}
+
+body.sidebar-tertutup .auth-logout-global:not([hidden]) {
+  top: 20px !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 76px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 40px;
+  padding: 8px 13px !important;
+  border: 1px solid var(--garis) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--teks-pudar) !important;
+  box-shadow: 0 6px 16px rgba(20,50,58,.08) !important;
+}
+
+body.sidebar-tertutup .auth-logout-global:not([hidden]):hover {
+  background: #f7fbfb !important;
+  color: var(--aksen) !important;
+}
+
+body.home-terbuka .auth-logout-global:not([hidden]) {
+  top: 22px !important;
+  right: 28px !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: auto !important;
+  border: 1px solid rgba(255,255,255,.36) !important;
+  border-radius: 999px !important;
+  background: rgba(4,47,55,.28) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(0,20,28,.12) !important;
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 1180px) and (min-width: 801px) {
+  .konten,
+  body.sidebar-tertutup .konten { padding-right: 24px; }
+  #inventaris .aksi-baris { flex-wrap: wrap; }
+}
+
+@media (max-width: 800px) {
+  .konten,
+  body.sidebar-tertutup .konten,
+  body:not(.sidebar-tertutup) .konten {
+    width: 100%;
+    max-width: none;
+    margin: 0 !important;
+    padding: calc(76px + env(safe-area-inset-top)) 14px calc(30px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .judul-baris {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .judul-baris > .tombol,
+  #tambah-alat {
+    width: 100%;
+    min-height: 46px;
+    margin: 0;
+  }
+
+  #inventaris .toolbar {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    border-radius: 13px;
+  }
+
+  #inventaris .toolbar input,
+  #inventaris .toolbar select { width: 100%; }
+
+  #inventaris .tabel { min-width: 760px; }
+  #inventaris .tabel th,
+  #inventaris .tabel td { padding: 10px 12px; }
+  #inventaris .aksi-baris { flex-wrap: nowrap; }
+
+  body:not(.sidebar-tertutup) .auth-logout-global:not([hidden]) {
+    top: auto !important;
+    right: auto !important;
+    bottom: calc(18px + env(safe-area-inset-bottom)) !important;
+    left: 16px !important;
+    width: calc(min(82vw, 300px) - 32px) !important;
+  }
+
+  body.sidebar-tertutup .auth-logout-global:not([hidden]) {
+    top: calc(14px + env(safe-area-inset-top)) !important;
+    right: 14px !important;
+    bottom: auto !important;
+    left: auto !important;
+    min-height: 44px;
+    padding: 8px 13px !important;
+    border-radius: 12px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #inventaris .tabel { min-width: 720px; }
+  .judul-baris h2 { font-size: 1.45rem; }
+}
