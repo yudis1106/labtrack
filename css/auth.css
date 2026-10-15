@@ -1,38 +1,43 @@
 /* LabTrack - autentikasi pada homepage */
 
-/* Login admin lama sudah digantikan oleh autentikasi terpadu di homepage.
-   Elemen lama tetap dipertahankan di DOM agar JavaScript lama tidak error,
-   tetapi tidak lagi ditampilkan ke pengguna. */
+/* Login admin lama sudah digantikan oleh autentikasi terpadu di homepage. */
 .menu-tombol[data-target="admin"],
 #admin {
   display: none !important;
 }
 
-/* Pertahankan ukuran visual homepage asli. Jika konten autentikasi lebih tinggi
-   dari viewport, halaman homepage dapat di-scroll tanpa mengecilkan logo/judul. */
+/* Pertahankan ukuran dan komposisi homepage asli. */
 .home-screen {
   overflow-x: hidden !important;
   overflow-y: auto !important;
 }
 
+/* Area autentikasi dibuat sebagai panel mengambang di kanan atas,
+   sehingga logo, judul, dan subtitle utama tidak terdorong ke bawah. */
 .auth-panel {
-  width: min(460px, 92vw);
-  margin-top: 14px;
-}
-
-/* Tombol Login / Daftar ditempatkan di pojok kanan atas agar homepage lebih bersih. */
-.auth-tabs {
   position: fixed;
   top: 24px;
   right: 32px;
   z-index: 10020;
-  display: flex;
-  gap: 6px;
+  width: min(460px, calc(100vw - 64px));
   margin: 0;
+}
+
+/* Setelah berhasil login, kartu identitas di tengah homepage tidak perlu tampil.
+   Identitas tetap tersedia di sidebar dan tombol Logout berada di kanan atas. */
+.auth-panel:has(#auth-guest[hidden]) {
+  display: none;
+}
+
+.auth-tabs {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 0 0 10px;
   padding: 5px;
   border: 1px solid rgba(255,255,255,.28);
   border-radius: 14px;
-  background: rgba(0, 28, 34, .28);
+  background: rgba(0, 28, 34, .32);
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 24px rgba(0,20,28,.14);
 }
@@ -60,11 +65,11 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 9px 10px;
   padding: 13px;
-  border: 1px solid rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.22);
   border-radius: 16px;
-  background: rgba(3, 44, 51, .36);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 16px 30px rgba(0, 20, 28, .18);
+  background: rgba(3, 44, 51, .72);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 30px rgba(0, 20, 28, .24);
   text-align: left;
 }
 
@@ -73,7 +78,7 @@
 .auth-form label {
   display: grid;
   gap: 4px;
-  color: rgba(255,255,255,.88);
+  color: rgba(255,255,255,.92);
   font-size: .8rem;
   font-weight: 500;
 }
@@ -86,13 +91,16 @@
   border: 1px solid rgba(255,255,255,.28);
   border-radius: 9px;
   outline: none;
-  background: rgba(255,255,255,.1);
-  color: #fff;
+  background: rgba(255,255,255,.96);
+  color: #14323a;
   font: inherit;
 }
 
-.auth-form input::placeholder { color: rgba(255,255,255,.5); }
-.auth-form input:focus { border-color: #82f1ed; box-shadow: 0 0 0 3px rgba(130,241,237,.12); }
+.auth-form input::placeholder { color: #73868b; }
+.auth-form input:focus {
+  border-color: #82f1ed;
+  box-shadow: 0 0 0 3px rgba(130,241,237,.14);
+}
 
 .auth-submit {
   grid-column: 1 / -1;
@@ -105,26 +113,18 @@
 .auth-pesan {
   min-height: 18px;
   margin: 6px 4px 0;
+  padding: 0 2px;
   font-size: .8rem;
+  text-align: right;
 }
 
 .auth-pesan.berhasil { color: #baf7e7; }
 .auth-pesan.gagal { color: #ffd3cf; }
 
+/* Kartu ini tidak dipakai lagi di homepage setelah login. */
 .auth-sudah-login {
-  display: grid;
-  gap: 4px;
-  justify-items: center;
-  padding: 14px 18px;
-  border: 1px solid rgba(255,255,255,.22);
-  border-radius: 14px;
-  background: rgba(3, 44, 51, .28);
-  backdrop-filter: blur(10px);
+  display: none !important;
 }
-
-.auth-sudah-login[hidden] { display: none !important; }
-.auth-sudah-login strong { font-size: 1.08rem; }
-.auth-sudah-login span:last-child { color: rgba(255,255,255,.7); font-size: .88rem; }
 
 .auth-role {
   padding: 3px 8px;
@@ -136,6 +136,7 @@
   letter-spacing: .08em;
 }
 
+/* Identitas akun tetap berada di sidebar bawah. */
 .auth-sidebar-account {
   margin-top: auto;
   padding: 12px;
@@ -149,7 +150,7 @@
 .auth-sidebar-account strong { color: #fff; font-size: .9rem; }
 .auth-sidebar-account small { color: rgba(255,255,255,.62); }
 
-/* Tombol logout memakai tombol yang sudah ada, tetapi dipindahkan ke kanan atas. */
+/* Tombol Logout dari sidebar diposisikan ke kanan atas halaman. */
 #auth-logout {
   position: fixed;
   top: 24px;
@@ -159,31 +160,34 @@
   min-width: 96px;
   padding: 9px 16px;
   border-radius: 999px;
-  border: 1px solid #0f8b8d;
-  background: rgba(255,255,255,.96);
-  color: #0f7477;
-  box-shadow: 0 8px 22px rgba(8,54,62,.15);
+  border: 1px solid rgba(255,255,255,.45);
+  background: rgba(8, 67, 74, .72);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 22px rgba(8,54,62,.18);
 }
 
 #auth-logout:hover {
-  background: #f4ffff;
+  background: rgba(12, 105, 108, .9);
   transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .auth-panel {
+    top: 18px;
+    right: 18px;
+    width: min(420px, calc(100vw - 36px));
+  }
 }
 
 @media (max-width: 680px) {
   .auth-panel {
-    width: min(92vw, 400px);
-  }
-
-  .auth-form {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-submit { grid-column: 1; }
-
-  .auth-tabs {
     top: 12px;
     right: 12px;
+    width: calc(100vw - 24px);
+  }
+
+  .auth-tabs {
     gap: 3px;
     padding: 4px;
   }
@@ -192,6 +196,14 @@
     padding: 7px 9px;
     font-size: .78rem;
   }
+
+  .auth-form {
+    grid-template-columns: 1fr;
+    max-height: calc(100dvh - 86px);
+    overflow-y: auto;
+  }
+
+  .auth-submit { grid-column: 1; }
 
   #auth-logout {
     top: 12px;
