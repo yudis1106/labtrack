@@ -17,8 +17,9 @@
   position: absolute;
   top: 20px;
   right: 12px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 34px;
   height: 34px;
   padding: 0;
@@ -27,10 +28,21 @@
   background: rgba(255,255,255,.08);
   color: #fff;
   font: inherit;
-  font-size: 1.65rem;
-  line-height: 1;
+  font-size: 0;
+  line-height: 0;
   cursor: pointer;
   transition: background .2s ease, transform .2s ease;
+}
+
+/* Chevron dibuat dengan CSS agar benar-benar simetris di tengah tombol. */
+.sidebar-toggle::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transform-origin: center;
 }
 
 .sidebar-toggle:hover {
