@@ -1,0 +1,149 @@
+/* LabTrack - autentikasi pada homepage */
+.auth-panel {
+  width: min(440px, 92vw);
+  margin-top: 22px;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 5px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 14px;
+  background: rgba(0, 28, 34, .18);
+  backdrop-filter: blur(10px);
+}
+
+.auth-tab {
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255,255,255,.72);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-tab.aktif {
+  background: rgba(255,255,255,.16);
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(0,0,0,.12);
+}
+
+.auth-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 16px;
+  background: rgba(3, 44, 51, .36);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 16px 30px rgba(0, 20, 28, .18);
+  text-align: left;
+}
+
+.auth-form[hidden] { display: none !important; }
+
+.auth-form label {
+  display: grid;
+  gap: 5px;
+  color: rgba(255,255,255,.88);
+  font-size: .84rem;
+  font-weight: 500;
+}
+
+.auth-form label:nth-last-of-type(1),
+.auth-form label:only-of-type {
+  grid-column: auto;
+}
+
+.auth-form input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 9px;
+  outline: none;
+  background: rgba(255,255,255,.1);
+  color: #fff;
+  font: inherit;
+}
+
+.auth-form input::placeholder { color: rgba(255,255,255,.5); }
+.auth-form input:focus { border-color: #82f1ed; box-shadow: 0 0 0 3px rgba(130,241,237,.12); }
+
+.auth-submit {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 3px !important;
+}
+
+.auth-pesan {
+  min-height: 20px;
+  margin: 8px 4px 0;
+  font-size: .84rem;
+}
+
+.auth-pesan.berhasil { color: #baf7e7; }
+.auth-pesan.gagal { color: #ffd3cf; }
+
+.auth-sudah-login {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  padding: 14px 18px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 14px;
+  background: rgba(3, 44, 51, .28);
+  backdrop-filter: blur(10px);
+}
+
+.auth-sudah-login[hidden] { display: none !important; }
+.auth-sudah-login strong { font-size: 1.08rem; }
+.auth-sudah-login span:last-child { color: rgba(255,255,255,.7); font-size: .88rem; }
+
+.auth-role {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(115,239,235,.16);
+  color: #9af7f2;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.auth-sidebar-account {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,.12);
+  display: grid;
+  gap: 9px;
+}
+
+.auth-sidebar-account[hidden] { display: none !important; }
+.auth-sidebar-account > div { display: grid; gap: 2px; }
+.auth-sidebar-account strong { color: #fff; font-size: .9rem; }
+.auth-sidebar-account small { color: rgba(255,255,255,.62); }
+.auth-sidebar-account .tombol { width: 100%; }
+
+@media (max-width: 680px) {
+  .auth-panel { width: min(92vw, 400px); margin-top: 16px; }
+  .auth-form { grid-template-columns: 1fr; max-height: 42vh; overflow-y: auto; }
+  .auth-submit { grid-column: 1; }
+  .home-center { width: 94vw !important; }
+  .home-logo { width: min(42vw, 180px) !important; }
+  .home-title { font-size: clamp(2rem, 10vw, 3.2rem) !important; }
+  .home-subtitle { font-size: .86rem; }
+}
+
+@media (max-height: 720px) {
+  .home-logo { width: min(24vw, 150px) !important; }
+  .home-title { font-size: clamp(1.9rem, 5vw, 3.2rem) !important; }
+  .home-subtitle { margin-top: 6px !important; }
+  .auth-panel { margin-top: 10px; }
+  .auth-form { max-height: 36vh; overflow-y: auto; }
+}
