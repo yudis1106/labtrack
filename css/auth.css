@@ -358,31 +358,69 @@ body.auth-modal-terbuka {
 }
 
 @media (max-width: 680px) {
+  /* Di HP tombol auth diletakkan simetris di atas, tidak menabrak branding. */
   .auth-top-actions {
-    top: 12px;
-    right: 12px;
-    gap: 5px;
+    top: calc(12px + env(safe-area-inset-top));
+    right: auto;
+    left: 50%;
+    width: calc(100% - 28px);
+    max-width: 390px;
+    transform: translateX(-50%);
+    justify-content: center;
+    gap: 6px;
   }
 
   .auth-top-button {
-    min-height: 36px;
-    padding: 7px 10px;
-    font-size: .78rem;
+    flex: 1;
+    min-width: 0;
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: .82rem;
+    text-align: center;
+  }
+
+  /* Karena tombol auth ada di atas, judul kecil homepage diberi jarak aman. */
+  .home-kicker {
+    top: calc(72px + env(safe-area-inset-top)) !important;
+  }
+
+  .home-center {
+    top: 54% !important;
+  }
+
+  .home-studio {
+    bottom: calc(3.5% + env(safe-area-inset-bottom)) !important;
   }
 
   .auth-modal {
-    padding: 14px;
+    align-items: center;
+    padding:
+      calc(12px + env(safe-area-inset-top))
+      12px
+      calc(12px + env(safe-area-inset-bottom));
   }
 
   .auth-modal-card {
-    width: min(94vw, 430px);
-    max-height: 88dvh;
+    width: 100%;
+    max-width: 430px;
+    max-height: calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     padding: 20px 16px 18px;
     border-radius: 18px;
+    overscroll-behavior: contain;
+  }
+
+  .auth-modal-close {
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
   }
 
   .auth-modal-brand {
+    align-items: flex-start;
     gap: 10px;
+    padding-right: 38px;
+    margin-bottom: 16px;
   }
 
   .auth-modal-logo {
@@ -392,7 +430,27 @@ body.auth-modal-terbuka {
   }
 
   .auth-modal-brand h2 {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
+    line-height: 1.15;
+  }
+
+  .auth-modal-brand p:last-child {
+    font-size: .82rem;
+  }
+
+  .auth-modal-tabs {
+    margin-bottom: 14px;
+  }
+
+  .auth-modal-tab {
+    min-height: 40px;
+    padding: 8px 6px;
+    font-size: .82rem;
+  }
+
+  .auth-form,
+  .auth-form-grid {
+    gap: 11px;
   }
 
   .auth-form-grid {
@@ -403,16 +461,62 @@ body.auth-modal-terbuka {
     grid-column: 1;
   }
 
-  .auth-logout-global {
-    top: 14px;
-    right: 14px;
-    min-width: 82px;
-    padding: 8px 13px;
+  .auth-form input {
+    height: 44px;
+    font-size: 16px;
   }
 
+  /* Hamburger kiri dan Logout kanan dibuat seimbang agar header aplikasi rapi. */
+  .auth-logout-global {
+    top: calc(14px + env(safe-area-inset-top));
+    right: 14px;
+    min-width: 78px;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: .86rem;
+    box-shadow: 0 7px 18px rgba(8,54,62,.12);
+  }
+
+  /* Konten mobile sudah mempunyai padding atas untuk hamburger/logout,
+     jadi header halaman tidak perlu diturunkan lagi. */
   .halaman .judul-baris {
+    padding-top: 0;
     padding-right: 0;
-    padding-top: 54px;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .halaman .judul-baris > .tombol,
+  .halaman .judul-baris > button {
+    width: 100%;
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 380px) {
+  .auth-top-actions {
+    width: calc(100% - 20px);
+    gap: 4px;
+  }
+
+  .auth-top-button {
+    padding-inline: 7px;
+    font-size: .76rem;
+  }
+
+  .home-kicker {
+    top: calc(68px + env(safe-area-inset-top)) !important;
+  }
+
+  .auth-modal-card {
+    padding: 18px 13px 16px;
+    border-radius: 16px;
+  }
+
+  .auth-modal-logo {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
   }
 }
 
