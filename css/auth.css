@@ -351,6 +351,12 @@ body.auth-modal-terbuka {
   display: none !important;
 }
 
+/* Sisakan ruang di header halaman untuk tombol Logout agar tombol aksi seperti
+   Tambah alat tidak tertutup ketika sidebar dibuka maupun ditutup. */
+.halaman .judul-baris {
+  padding-right: 132px;
+}
+
 @media (max-width: 680px) {
   .auth-top-actions {
     top: 12px;
@@ -402,6 +408,11 @@ body.auth-modal-terbuka {
     right: 14px;
     min-width: 82px;
     padding: 8px 13px;
+  }
+
+  .halaman .judul-baris {
+    padding-right: 0;
+    padding-top: 54px;
   }
 }
 
