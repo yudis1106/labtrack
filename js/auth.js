@@ -47,8 +47,8 @@
         </div>
 
         <form id="auth-form-login" class="auth-form" novalidate>
-          <label>NIM / Username Admin
-            <input id="auth-login-identitas" type="text" autocomplete="username" placeholder="Masukkan NIM atau username" required>
+          <label>NIM
+            <input id="auth-login-identitas" type="text" autocomplete="username" placeholder="Masukkan NIM" required>
           </label>
           <label>Password
             <input id="auth-login-password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
@@ -285,7 +285,7 @@
     event.preventDefault();
     const identitas = document.getElementById("auth-login-identitas").value.trim();
     const password = document.getElementById("auth-login-password").value;
-    if (!identitas || !password) return pesanAuth("NIM/username dan password wajib diisi.", false);
+    if (!identitas || !password) return pesanAuth("NIM dan password wajib diisi.", false);
 
     pesanAuth("Memeriksa akun...", true);
     try {
