@@ -157,26 +157,33 @@
   color: rgba(255,255,255,.62);
 }
 
-/* Logout tetap di pojok kanan atas saat sudah login. */
-#auth-logout {
+/* Logout dibuat sebagai elemen global, bukan anak sidebar, sehingga tetap
+   terlihat walaupun sidebar digeser keluar layar. */
+.auth-logout-global {
   position: fixed;
-  top: 24px;
-  right: 32px;
-  z-index: 10020;
-  width: auto !important;
+  top: 20px;
+  right: 24px;
+  z-index: 10030;
   min-width: 96px;
   padding: 9px 16px;
-  border: 1px solid rgba(255,255,255,.46);
+  border: 1px solid #0f8b8d;
   border-radius: 999px;
-  background: rgba(3, 44, 51, .34);
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(0,20,28,.16);
-  backdrop-filter: blur(10px);
+  background: #ffffff;
+  color: #0f7477;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(8,54,62,.14);
+  transition: transform .2s ease, background .2s ease;
 }
 
-#auth-logout:hover {
-  background: rgba(255,255,255,.16);
+.auth-logout-global:hover {
+  background: #f2ffff;
   transform: translateY(-1px);
+}
+
+.auth-logout-global[hidden] {
+  display: none !important;
 }
 
 @media (max-width: 680px) {
@@ -207,9 +214,9 @@
     grid-column: 1;
   }
 
-  #auth-logout {
-    top: 12px;
-    right: 12px;
+  .auth-logout-global {
+    top: 14px;
+    right: 14px;
     min-width: 82px;
     padding: 8px 13px;
   }
