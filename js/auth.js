@@ -1,13 +1,12 @@
 // LabTrack - autentikasi Mahasiswa dan Admin pada homepage.
 (function () {
   const home = document.getElementById("home-screen");
-  const homeCenter = document.querySelector(".home-center");
   const tombolMasukDashboard = document.getElementById("home-enter");
   const formPinjam = document.getElementById("form-pinjam");
   const tombolMenuAdmin = document.querySelector('.menu-tombol[data-target="admin"]');
   const sidebar = document.getElementById("sidebar-menu");
 
-  if (!home || !homeCenter || !tombolMasukDashboard) return;
+  if (!home || !tombolMasukDashboard) return;
 
   // QR alat disimpan sementara agar tidak melewati halaman login.
   const urlAwal = new URL(window.location.href);
@@ -24,65 +23,160 @@
   const panel = document.createElement("div");
   panel.className = "auth-panel";
   panel.innerHTML = `
-    <div id="auth-guest">
-      <div class="auth-tabs" role="tablist" aria-label="Autentikasi LabTrack">
-        <button type="button" class="auth-tab aktif" data-auth-tab="login">Login</button>
-        <button type="button" class="auth-tab" data-auth-tab="daftar">Daftar Mahasiswa</button>
-      </div>
-
-      <form id="auth-form-login" class="auth-form" novalidate>
-        <label>NIM / Username Admin
-          <input id="auth-login-identitas" type="text" autocomplete="username" required>
-        </label>
-        <label>Password
-          <input id="auth-login-password" type="password" autocomplete="current-password" required>
-        </label>
-        <button type="submit" class="home-enter auth-submit">Login</button>
-      </form>
-
-      <form id="auth-form-daftar" class="auth-form" hidden novalidate>
-        <label>Nama lengkap
-          <input id="auth-daftar-nama" type="text" autocomplete="name" required>
-        </label>
-        <label>NIM
-          <input id="auth-daftar-nim" type="text" inputmode="numeric" autocomplete="off" required>
-        </label>
-        <label>Email
-          <input id="auth-daftar-email" type="email" autocomplete="email" required>
-        </label>
-        <label>Password
-          <input id="auth-daftar-password" type="password" autocomplete="new-password" minlength="6" required>
-        </label>
-        <label>Konfirmasi password
-          <input id="auth-daftar-konfirmasi" type="password" autocomplete="new-password" minlength="6" required>
-        </label>
-        <button type="submit" class="home-enter auth-submit">Daftar</button>
-      </form>
-      <p id="auth-pesan" class="auth-pesan" role="status"></p>
+    <div id="auth-guest" class="auth-top-actions">
+      <button type="button" class="auth-top-button" data-buka-auth="login">Login</button>
+      <button type="button" class="auth-top-button auth-top-button-primary" data-buka-auth="daftar">Daftar Mahasiswa</button>
     </div>
 
-    <div id="auth-sudah-login" class="auth-sudah-login" hidden>
-      <span class="auth-role" id="auth-role"></span>
-      <strong id="auth-nama"></strong>
-      <span id="auth-identitas"></span>
+    <div id="auth-modal" class="auth-modal" hidden>
+      <div class="auth-modal-backdrop" data-tutup-auth></div>
+      <section class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+        <button type="button" class="auth-modal-close" data-tutup-auth aria-label="Tutup">×</button>
+        <div class="auth-modal-brand">
+          <span class="auth-modal-logo" aria-hidden="true"></span>
+          <div>
+            <p class="auth-modal-kicker">LabTrack</p>
+            <h2 id="auth-modal-title">Login</h2>
+            <p id="auth-modal-subtitle">Masuk untuk melanjutkan ke sistem.</p>
+          </div>
+        </div>
+
+        <div class="auth-modal-tabs" role="tablist" aria-label="Pilih autentikasi">
+          <button type="button" class="auth-modal-tab aktif" data-auth-tab="login">Login</button>
+          <button type="button" class="auth-modal-tab" data-auth-tab="daftar">Daftar Mahasiswa</button>
+        </div>
+
+        <form id="auth-form-login" class="auth-form" novalidate>
+          <label>NIM / Username Admin
+            <input id="auth-login-identitas" type="text" autocomplete="username" placeholder="Masukkan NIM atau username" required>
+          </label>
+          <label>Password
+            <input id="auth-login-password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
+          </label>
+          <button type="submit" class="auth-submit">Masuk</button>
+          <p class="auth-switch-text">Belum punya akun? <button type="button" data-auth-link="daftar">Daftar mahasiswa</button></p>
+        </form>
+
+        <form id="auth-form-daftar" class="auth-form auth-form-daftar" hidden novalidate>
+          <div class="auth-form-grid">
+            <label>Nama lengkap
+              <input id="auth-daftar-nama" type="text" autocomplete="name" placeholder="Nama lengkap" required>
+            </label>
+            <label>NIM
+              <input id="auth-daftar-nim" type="text" inputmode="numeric" autocomplete="off" placeholder="NIM" required>
+            </label>
+            <label class="auth-field-full">Email
+              <input id="auth-daftar-email" type="email" autocomplete="email" placeholder="nama@email.com" required>
+            </label>
+            <label>Password
+              <input id="auth-daftar-password" type="password" autocomplete="new-password" minlength="6" placeholder="Minimal 6 karakter" required>
+            </label>
+            <label>Konfirmasi password
+              <input id="auth-daftar-konfirmasi" type="password" autocomplete="new-password" minlength="6" placeholder="Ulangi password" required>
+            </label>
+          </div>
+          <button type="submit" class="auth-submit">Daftar</button>
+          <p class="auth-switch-text">Sudah punya akun? <button type="button" data-auth-link="login">Login</button></p>
+        </form>
+
+        <p id="auth-pesan" class="auth-pesan" role="status"></p>
+      </section>
     </div>
   `;
-
-  // Panel autentikasi ditempatkan langsung pada homepage, bukan di dalam
-  // home-center. Ini mencegah panel ikut terkena transform posisi logo/judul.
   home.appendChild(panel);
 
+  const guest = document.getElementById("auth-guest");
+  const modal = document.getElementById("auth-modal");
+  const modalCard = modal.querySelector(".auth-modal-card");
   const formLogin = document.getElementById("auth-form-login");
   const formDaftar = document.getElementById("auth-form-daftar");
   const pesan = document.getElementById("auth-pesan");
-  const guest = document.getElementById("auth-guest");
-  const sudahLogin = document.getElementById("auth-sudah-login");
+  const modalTitle = document.getElementById("auth-modal-title");
+  const modalSubtitle = document.getElementById("auth-modal-subtitle");
 
   function pesanAuth(teks, berhasil) {
     pesan.textContent = teks || "";
     pesan.classList.toggle("berhasil", Boolean(berhasil));
     pesan.classList.toggle("gagal", Boolean(teks) && !berhasil);
   }
+
+  function pilihMode(mode, fokus) {
+    const loginAktif = mode === "login";
+    formLogin.hidden = !loginAktif;
+    formDaftar.hidden = loginAktif;
+
+    modalTitle.textContent = loginAktif ? "Login" : "Daftar Mahasiswa";
+    modalSubtitle.textContent = loginAktif
+      ? "Masuk menggunakan akun mahasiswa atau admin."
+      : "Buat akun mahasiswa untuk menggunakan layanan LabTrack.";
+
+    document.querySelectorAll("[data-auth-tab]").forEach(function (tombol) {
+      tombol.classList.toggle("aktif", tombol.dataset.authTab === mode);
+    });
+
+    pesanAuth("", false);
+
+    if (fokus !== false) {
+      window.setTimeout(function () {
+        const target = loginAktif
+          ? document.getElementById("auth-login-identitas")
+          : document.getElementById("auth-daftar-nama");
+        target?.focus();
+      }, 50);
+    }
+  }
+
+  function bukaModal(mode) {
+    pilihMode(mode || "login", false);
+    modal.hidden = false;
+    document.body.classList.add("auth-modal-terbuka");
+    window.setTimeout(function () {
+      modal.classList.add("terbuka");
+      const target = mode === "daftar"
+        ? document.getElementById("auth-daftar-nama")
+        : document.getElementById("auth-login-identitas");
+      target?.focus();
+    }, 10);
+  }
+
+  function tutupModal() {
+    modal.classList.remove("terbuka");
+    document.body.classList.remove("auth-modal-terbuka");
+    window.setTimeout(function () {
+      modal.hidden = true;
+      pesanAuth("", false);
+    }, 180);
+  }
+
+  document.querySelectorAll("[data-buka-auth]").forEach(function (tombol) {
+    tombol.addEventListener("click", function () {
+      bukaModal(tombol.dataset.bukaAuth);
+    });
+  });
+
+  document.querySelectorAll("[data-tutup-auth]").forEach(function (tombol) {
+    tombol.addEventListener("click", tutupModal);
+  });
+
+  document.querySelectorAll("[data-auth-tab]").forEach(function (tombol) {
+    tombol.addEventListener("click", function () {
+      pilihMode(tombol.dataset.authTab);
+    });
+  });
+
+  document.querySelectorAll("[data-auth-link]").forEach(function (tombol) {
+    tombol.addEventListener("click", function () {
+      pilihMode(tombol.dataset.authLink);
+    });
+  });
+
+  modalCard.addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && !modal.hidden) tutupModal();
+  });
 
   async function bacaJson(respons) {
     const teks = await respons.text();
@@ -95,6 +189,12 @@
     const hasil = await bacaJson(respons);
     if (!respons.ok || hasil.berhasil === false) throw new Error(hasil.pesan || "Autentikasi gagal.");
     return hasil;
+  }
+
+  function amanAuth(teks) {
+    const el = document.createElement("div");
+    el.textContent = teks ?? "";
+    return el.innerHTML;
   }
 
   function isiIdentitasPeminjam() {
@@ -151,12 +251,6 @@
     `;
   }
 
-  function amanAuth(teks) {
-    const el = document.createElement("div");
-    el.textContent = teks ?? "";
-    return el.innerHTML;
-  }
-
   async function sinkronkanAdmin() {
     if (typeof ambilStatusAdmin === "function") {
       try { await ambilStatusAdmin(); } catch (_) {}
@@ -171,7 +265,6 @@
 
     if (!akunAktif) {
       guest.hidden = false;
-      sudahLogin.hidden = true;
       tombolMasukDashboard.hidden = true;
       if (tombolMenuAdmin) tombolMenuAdmin.hidden = true;
       perbaruiSidebar();
@@ -180,29 +273,13 @@
     }
 
     guest.hidden = true;
-    sudahLogin.hidden = false;
+    tutupModal();
     tombolMasukDashboard.hidden = false;
-    document.getElementById("auth-role").textContent = akunAktif.role === "admin" ? "ADMIN" : "MAHASISWA";
-    document.getElementById("auth-nama").textContent = akunAktif.nama || (akunAktif.role === "admin" ? "Admin" : "Mahasiswa");
-    document.getElementById("auth-identitas").textContent = akunAktif.role === "mahasiswa" ? "NIM " + akunAktif.nim : "Akses pengelola LabTrack";
-
     if (tombolMenuAdmin) tombolMenuAdmin.hidden = akunAktif.role !== "admin";
     isiIdentitasPeminjam();
     perbaruiSidebar();
     sinkronkanAdmin();
   }
-
-  document.querySelectorAll("[data-auth-tab]").forEach(function (tombol) {
-    tombol.addEventListener("click", function () {
-      const tujuan = tombol.dataset.authTab;
-      document.querySelectorAll("[data-auth-tab]").forEach(function (x) {
-        x.classList.toggle("aktif", x === tombol);
-      });
-      formLogin.hidden = tujuan !== "login";
-      formDaftar.hidden = tujuan !== "daftar";
-      pesanAuth("", false);
-    });
-  });
 
   formLogin.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -212,14 +289,13 @@
 
     pesanAuth("Memeriksa akun...", true);
     try {
-      const hasil = await panggilAuth("/api/auth/login", {
+      await panggilAuth("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identitas: identitas, password: password }),
+        body: JSON.stringify({ identitas, password }),
       });
       const status = await panggilAuth("/api/auth/status", { method: "GET" });
       terapkanAkun(status);
-      pesanAuth(hasil.pesan || "Login berhasil.", true);
       tombolMasukDashboard.click();
       bukaAlatDariQrSetelahLogin();
     } catch (error) {
@@ -242,14 +318,13 @@
 
     pesanAuth("Membuat akun mahasiswa...", true);
     try {
-      const hasil = await panggilAuth("/api/auth/register", {
+      await panggilAuth("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nama, nim, email, password, konfirmasiPassword }),
       });
       const status = await panggilAuth("/api/auth/status", { method: "GET" });
       terapkanAkun(status);
-      pesanAuth(hasil.pesan || "Pendaftaran berhasil.", true);
       tombolMasukDashboard.click();
       bukaAlatDariQrSetelahLogin();
     } catch (error) {
