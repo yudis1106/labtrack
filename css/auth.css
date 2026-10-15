@@ -1,5 +1,13 @@
 /* LabTrack - autentikasi pada homepage */
 
+/* Login admin lama sudah digantikan oleh autentikasi terpadu di homepage.
+   Elemen lama tetap dipertahankan di DOM agar JavaScript lama tidak error,
+   tetapi tidak lagi ditampilkan ke pengguna. */
+.menu-tombol[data-target="admin"],
+#admin {
+  display: none !important;
+}
+
 /* Saat form autentikasi tampil, konten homepage harus lebih ringkas agar
    logo, judul, dan form tetap muat di satu layar desktop maupun mobile. */
 .home-center {
